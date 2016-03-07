@@ -97,7 +97,7 @@ print '
       <input type="submit" name="save" class="btn btn-primary" value="Сохранить">
       <input type="reset" class="btn btn-default" value="Отмена">
 </form>';
-   exit;
+   
   }
 if(isset($_GET['save']))
 {
