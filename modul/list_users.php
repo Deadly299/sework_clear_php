@@ -71,18 +71,72 @@
           <div class="row placeholders ">
 
 <?php 
+if(isset($_POST['save']))
+{ 
+  $check = false;
+  for ($i=0; $i <= 6 ; $i++) 
+  { 
+    if($_POST[$i] ==''){ $check = true;}
+  }
+  if ($check != true)
+   {
+    $id = $_POST['0'];
+    $login = $_POST['1'];
+    $role = $_POST['2'];
+    $name = $_POST['3'];
+    $date_bir = $_POST['4'];
+    $email = $_POST['5'];
+    $phone = $_POST['6'];
+
+      $connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
+      $update_user = pg_query($connect,"UPDATE users SET 
+login='$login',
+role='$role',
+name_user='$name',
+date_bir='$date_bir',
+email='$email',
+phonenumber='$phone'
+WHERE id ='$id'
+");
+
+    print '<h3 align="center"> <b>Пользователь '.$name.'</b></h3>';
+    print '<h3 align="center"> Успешно изменен!</h3>';
+    header( "Refresh:3; url=list_users.php", true, 303); 
+    exit;     
+   }
+
+
+}
+  if(isset($_POST['esc']))
+  { 
+    print '<h3 align="center"> <b>Отмененно пользователем.</b></h3>';
+    header( "Refresh:1; url=list_users.php", true, 303); 
+    exit;
+  }
+
+  if(isset($_GET['delete']))
+  {
+    $delete = $_GET['delete'];
+    $connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
+    $result_users = pg_query($connect,"DELETE FROM users WHERE id ='$delete'");
+     print '<h3 align="center"> <b>Пользователь </b></h3>';
+      print '<h3 align="center"> Удален из базы данных!</h3>';
+      header( "Refresh:3; url=list_users.php", true, 303); 
+      exit;     
+  }
+
   if(isset($_GET['edit']))
   { 
     $edit = $_GET['edit'];
-    $arrayRow = array('0' => 'ID пользователя','1' => 'Логин', '2' => 'Пароль', '3' => 'Права доступа',
-     '4' => 'Ф.И.О пользователя', '5' => 'Дата рождения', '6' => 'Электронная Почта', '7' => 'Номер моб телефона'  );
-    $connect= pg_connect("host=localhost port=5432 dbname=sework user=postgres password=postgres");
-    $result_users = pg_query($connect,"SELECT * FROM  users WHERE id ='$edit'");
-    print '<form class="form-horizontal" >';
+    $arrayRow = array('0' => 'ID пользователя','1' => 'Логин', '2' => 'Права доступа',
+     '3' => 'Ф.И.О пользователя', '4' => 'Дата рождения', '5' => 'Электронная Почта', '6' => 'Номер моб телефона'  );
+    $connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
+    $result_users = pg_query($connect,"SELECT id, login,role, name_user, date_bir, email, phoneNumber FROM  users WHERE id ='$edit'");
+    print '<form class="form-horizontal" method ="POST">';
     
     $mass_users = pg_fetch_row($result_users);
    
-      for ($i=1; $i <= 7 ; $i++) 
+      for ($i=1; $i <= 6 ; $i++) 
       { 
         print '<div class="form-group">
           <label class="control-label col-xs-3" for="lastName">'.$arrayRow[$i].':</label>
@@ -95,33 +149,10 @@
 print'<input type="text" name= "0" value= "'.$edit.'" hidden="true" >';
 print '
       <input type="submit" name="save" class="btn btn-primary" value="Сохранить">
-      <input type="reset" class="btn btn-default" value="Отмена">
-</form>';
+      <input type="submit" name ="esc" class="btn btn-default" value="Отмена">
+</form></br>';
    
   }
-if(isset($_GET['save']))
-{
-  for ($i=0; $i <= 7 ; $i++) 
-  { 
-    if($_GET[$i] =='') $check = true;
-  }
-  if ($check != true)
-   {
-      $connect= pg_connect("host=localhost port=5432 dbname=sework user=postgres password=postgres");
-      $update_user = pg_query($connect,"UPDATE users SET 
-login="$_GET['1']",
-password="$_GET['2']",
-role="$_GET['3']",
-name="$_GET['4']",
-date="$_GET['5']",
-email="$_GET['6']",
-phone="$_GET['7']",
-WHERE id ="$_GET['0']"
-");
-   }
-
-
-}
 
 
 ?>
@@ -131,13 +162,19 @@ WHERE id ="$_GET['0']"
 <!-- ///////////////////////////////////////////////////////////////////////////////////////// -->
 <table class="table table-striped">
 <?php
-  $connect= pg_connect("host=localhost port=5432 dbname=sework user=postgres password=postgres");
+  $arrayRow = array('0' => 'ID пользователя','1' => 'Логин', '2' => 'Права доступа',
+     '3' => 'Ф.И.О пользователя', '4' => 'Дата рождения', '5' => 'Электронная Почта', '6' => 'Номер моб телефона'  );
+  $connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
 
-  $result_users = pg_query($connect,"SELECT * FROM  users ORDER BY id");
+  $result_users = pg_query($connect,"SELECT id, login,role, name_user, date_bir, email, phoneNumber FROM  users ORDER BY id");
+    for ($b=0; $b <=6 ; $b++) 
+    { 
+       print '<td>'.trim($arrayRow[$b]).'</td>';
+    }
   while ($mass_users = pg_fetch_row($result_users))
    {
       print '<tr>';
-      for ($i=0; $i < 7 ; $i++) 
+      for ($i=0; $i <= 6 ; $i++) 
       { 
         print '<td>'.trim($mass_users[$i]).'</td>';
       }

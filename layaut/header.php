@@ -53,4 +53,12 @@
             <li><a href="create_users.php">Добавить пользователя</a></li>
             <li><a href="list_users.php">Список пользователей</a></li>
           </ul>
+             <ul class="nav nav-sidebar">
+            <li><h4>&nbspДополнительные настройки</h4></li>
+            <li><a href="faculties.php">Факультеты</a></li>
+            <li><a href="list_users.php">Кафедры</a></li>
+            <li><a href="list_users.php">Код ОКСО</a></li>
+            <li><a href="list_users.php">Состав ШГПИ</a></li>
+            <li><a href="list_users.php">Студенты</a></li>
+          </ul>
         </div>

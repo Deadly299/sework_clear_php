@@ -57,24 +57,38 @@
         </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h3 align="center">Создание шаблонов, для факультетов ШГПИ</h3>
+          <h2 align="center">Создание шаблонов, для факультетов ШГПИ</h2>
 
           <div class="row placeholders">
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////// -->
 <?php 
 
-/*  if (isset($_GET['type'])) $type =$_GET['type'];
-  elseif (isset($_POST['type'])) $type = $_POST['type'];
-  else
-  {
-    print'<div class="alert alert-success">Внимание! Шаблон успешно загружен. Что бы создать новый, перейдите по ссылке</div>
-          <a href="adminka.php">Вернуться назад.</a>';
-    exit;
-  }*/
-$connect= pg_connect("host=localhost port=5432 dbname=sework user=postgres password=postgres");
-$list_fac = pg_query($connect, "SELECT  *FROM faculties");
-print '<h2 class="page-header" align="center">Тип шаблона</h2>';
+include("function/function_modul.php");
+
+
+  if(isset($_POST['content']) and isset($_POST['id_fac']))
+  {  
+     $date_create = date("j.n.Y"); 
+     $html = $_POST['content'];
+     $id_fac = $_POST['id_fac'];
+     $type = $_POST['type'];
+     $html= strip_tags($html, '<p><a><colgroup><table><tbody><tr><td><b><strong><br>style="text-align: center; vertical-align: bottom;"');
+     $name_tem = 'Шаблон '.$id_fac.'  От: '.$date_create;
+     $col_param = Serch_string_html($_POST['content']);
+ 
+      $connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
+      $res=pg_query($connect,"INSERT INTO templates (name_tem, value, id_fac, date_create, type, not_valid) VALUES ('$name_tem','$html','$id_fac', '$date_create','$type', 'no');");
+     print'<div class="alert alert-success">Внимание! Шаблон успешно загружен.</div>';
+     header( "Refresh:3; url=create_template.php", true, 303);
+      
+  }
+
+ ?> 
+<?php 
+$connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
+$list_fac = pg_query($connect, "SELECT  *FROM faculties WHERE not_valid = 'no' ");
+print '<h3 class="page-header" align="center">Тип шаблона</h3>';
 print '<form name="myform" class="form_vkr" action="" method="POST" onsubmit="return save()">';
 print '     <label class="checkbox-inline">
               <input type="radio" id="radio-inline"  name="type" checked ="true" value="0"> - Курсовая работа  
@@ -83,11 +97,11 @@ print '     <label class="checkbox-inline">
               <input type="radio" id="radio-inline"  name="type" value="1"> - Дипломная работа 
             </label></br></br>
                        ';
-print '<h2 class="page-header" align="center">Факультеты</h2>';
+print '<h3 class="page-header" align="center">Факультеты</h3>';
     while ($mass_fac=pg_fetch_row($list_fac))
     {     
       print'<label class="checkbox-inline">
-                  <input type="radio" id="radio-inline"  name="id_fac" value="'.$mass_fac[0].'"> '.$mass_fac[1].'
+                  <input type="radio" id="radio-inline"  name="id_fac" value="'.$mass_fac[0].'"> '.$mass_fac[2].'
             </label>';
     }
  ?>
@@ -98,6 +112,7 @@ print '<h2 class="page-header" align="center">Факультеты</h2>';
 <div class="content" align="center">
   <textarea name="content" id="frameId" cols="45" rows="5"></textarea>
 </div>
+<br>
   <script type="text/javascript">
     CKEDITOR.replace( 'frameId');
   </script>
@@ -105,7 +120,7 @@ print '<h2 class="page-header" align="center">Факультеты</h2>';
 
 
   <div class="form_submit">
-      <button type="submit" name="Save" class="btn btn-primary">Создать</button>
+      <button type="submit" name="Save" class="btn btn-primary">Создать шаблон</button>
       <!-- <button type="submit" name="Prewi" class="btn btn-default">Предварительный просмотр</button> -->
   </div>
 </form>
@@ -114,28 +129,7 @@ print '<h2 class="page-header" align="center">Факультеты</h2>';
  
 
  
-<?php 
 
-include("function/function_modul.php");
-
-
-  if(isset($_POST['content']) and isset($_POST['id_fac']))
-  {
-     $date_create = date("j.n.Y"); 
-     $html = $_POST['content'];
-     $id_fac = $_POST['id_fac'];
-     $type = $_POST['type'];
-     $html= strip_tags($html, '<p><a><colgroup><table><tbody><tr><td><b><strong><br>style="text-align: center; vertical-align: bottom;"');
-     $name_sh = 'Шаблон:'.$date_create;
-     $col_param = Serch_string_html($_POST['content']);
- 
-      $connect= pg_connect("host=localhost port=5432 dbname=sework user=postgres password=postgres");
-      $res=pg_query($connect,"INSERT INTO setting (name, file_s, id_fac, type) VALUES ('$name_sh','$html','$id_fac', '$type');");
-      //header("location:setting_vkr.php");
-      
-  }
-
- ?> 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////// -->
          
           

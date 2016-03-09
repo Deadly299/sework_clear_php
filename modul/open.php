@@ -57,9 +57,9 @@ FROM tamplate_vkr WHERE id ='$id';");// Запрос к выбраной раб�
 {
 	 $show = $_GET['show'];
  	 //$row = $_GET['row'];
- 	$connect= pg_connect("host=localhost port=5432 dbname=sework user=postgres password=postgres");
+ 	$connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
 
-	$result_tamplate = pg_query("SELECT id, name, file_s FROM setting WHERE id ='$show';");// Запрос к шаблону
+	$result_tamplate = pg_query("SELECT id, name_tem, value FROM templates WHERE id ='$show';");// Запрос к шаблону
 		$mass_tamplate=pg_fetch_row($result_tamplate);
 		//print_r($mass_works);exit;
 	$html= strip_tags($mass_tamplate[2], '<p><a><colgroup><table><tbody><tr><td><b><strong><br>');

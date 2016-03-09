@@ -67,47 +67,47 @@
           <h3 class="page-header" align="center">Добавление пользователя</h3>
 <?php
 
- if(  isset($_GET['login']) and
-      isset($_GET['lastName']) and
-      isset($_GET['firstName']) and
-      isset($_GET['fatherName']) and
-      isset($_GET['date']) and
-      isset($_GET['email']) and
-      isset($_GET['inputPassword']) and
-      isset($_GET['confirmPassword']) and
-      isset($_GET['phoneNumber']) 
+ if(  isset($_POST['login']) and
+      isset($_POST['lastName']) and
+      isset($_POST['firstName']) and
+      isset($_POST['fatherName']) and
+      isset($_POST['date']) and
+      isset($_POST['email']) and
+      isset($_POST['inputPassword']) and
+      isset($_POST['confirmPassword']) and
+      isset($_POST['phoneNumber']) 
     )
 {
 
-if( $_GET['login'] !='' and
-    $_GET['lastName'] !='' and
-    $_GET['firstName'] !='' and
-    $_GET['fatherName'] !='' and
-    $_GET['date'] !='' and
-    $_GET['email'] !='' and
-    $_GET['inputPassword'] !='' and
-    $_GET['confirmPassword'] !='' and
-    $_GET['phoneNumber'] !='' and
-    $_GET['inputPassword'] == $_GET['confirmPassword']
+if( $_POST['login'] !='' and
+    $_POST['lastName'] !='' and
+    $_POST['firstName'] !='' and
+    $_POST['fatherName'] !='' and
+    $_POST['date'] !='' and
+    $_POST['email'] !='' and
+    $_POST['inputPassword'] !='' and
+    $_POST['confirmPassword'] !='' and
+    $_POST['phoneNumber'] !='' and
+    $_POST['inputPassword'] == $_POST['confirmPassword']
    )
     {
 
-     $login = $_GET['login']; 
-     $lastName = $_GET['lastName'];
-     $firstName = $_GET['firstName'];
-     $fatherName = $_GET['fatherName'];
-     $date = $_GET['date'];
-     $email = $_GET['email'];
-     $inputPassword = $_GET['inputPassword'];
-     $phoneNumber = $_GET['phoneNumber'];
-     $full_name = $_GET['firstName'].' '.$_GET['lastName'].' '.$_GET['fatherName'];
+     $login = $_POST['login']; 
+     $lastName = $_POST['lastName'];
+     $firstName = $_POST['firstName'];
+     $fatherName = $_POST['fatherName'];
+     $date = $_POST['date'];
+     $email = $_POST['email'];
+     $inputPassword = $_POST['inputPassword'];
+     $phoneNumber = $_POST['phoneNumber'];
+     $full_name = $_POST['firstName'].' '.$_POST['lastName'].' '.$_POST['fatherName'];
 
-      $connect= pg_connect("host=localhost port=5432 dbname=sework user=postgres password=postgres");
-      $res=pg_query($connect,"INSERT INTO users (login, password, role, name, date, email, phone) 
+      $connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
+      $res=pg_query($connect,"INSERT INTO users (login, password, role, name_user, date_bir, email, phonenumber) 
         VALUES ('$login','$inputPassword','444', '$full_name', '$date','$email','$phoneNumber');");
        
-            print '<h3 align="center"> <b>Пользователь '.$full_name.'</b></h3>';
-            print '<h3 align="center"> Успешно создан!.</h3>';
+            print '<h3 align="center"> <b>Пользователь: '.$full_name.'</b></h3>';
+            print '<h3 align="center"> Успешно создан!</h3>';
         
             header( "Refresh:4; url=adminka.php", true, 303);
             exit;
@@ -131,7 +131,7 @@ if( $_GET['login'] !='' and
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////// -->
 
-<form class="form-horizontal" >
+<form class="form-horizontal" method="POST">
 <div class="form-group">
     <label class="control-label col-xs-3" for="lastName">Логин:</label>
     <div class="col-xs-9">

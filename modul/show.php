@@ -1,6 +1,6 @@
 
 <?php
-	$connect= pg_connect("host=localhost port=5432 dbname=sework user=postgres password=postgres");
+	$connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
 	
 	if(isset($_POST['id']) and isset($_POST['type']))
 	{
@@ -25,7 +25,7 @@
 					$type = 0;
 					break;
 			}
-			$result2 = pg_query($connect, "SELECT  *FROM setting WHERE id_fac='$id' AND type = '$type' ");
+			$result2 = pg_query($connect, "SELECT  *FROM templates WHERE id_fac='$id' AND Type = '$type' ");
 
 			print'<h3>Шаблон курсовых работ</h3>';	
 		
