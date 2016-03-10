@@ -96,9 +96,10 @@ abbr[title] {
 }
  
         #search_advice_wrapper{
-          margin-top: 15px;
+            //margin-top: 15px;
             display:none;
-            width: 900px;
+            width: 88%;
+            //width: auto;
             background-color: rgb(80, 90, 114);
             color: rgb(255, 227, 189);
             -moz-opacity: 0.95;
@@ -108,9 +109,39 @@ abbr[title] {
             filter:alpha(opacity=95);
             z-index:999;
             position: absolute;
-            top: 24px; left: 0px;
-            max-height: 300px;
+            top: -46px; 
+            left: -151px;
+            max-height: 150px;
             overflow-y: scroll;
+        }
+        .result_div{
+          background: #E3D3D3;
+          padding: 0;
+
+          padding-left: 10px;
+          padding-right: 10px;
+          width: 60%;
+          margin-left:20%;
+          margin-right: 20%;
+          text-align: left;
+          border:1px solid #AF9F9F;
+
+
+
+        }
+        .result_div:hover a{
+          text-decoration: none;
+          
+
+        }
+        .result_div p{
+          font-size: 17px;
+
+
+        }
+        .result_div:hover h4{
+          color:#3B6AAB;
+
         }
  
         #search_advice_wrapper .advice_variant{
@@ -118,6 +149,8 @@ abbr[title] {
             padding: 5px;
             border-top: 0;
             text-align: left;
+            
+
         }
         #search_advice_wrapper .advice_variant:hover{
             color:#FEFFBD;
@@ -128,7 +161,7 @@ abbr[title] {
             padding: 5px;
             color:#FEFFBD;
             background-color:#C8C8E6;
-
+             
         }
 b,
 strong {
@@ -1484,7 +1517,7 @@ a.bg-danger:focus {
 }
 .page-header {
   padding-bottom: 9px;
-  margin: 40px 0 20px;
+  margin: 0px 0 20px;
   border-bottom: 1px solid #eeeeee;
 }
 ul,
@@ -2640,14 +2673,48 @@ output {
   
 }
 
-.form-control-serch {
+.form-control {
   display: block;
+  text-align: center;
   width: 60%;
+  height: 34px;
+  padding: 6px 12px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  color: #555555;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+.search_button{
+  width:80px;
+  height: 35px;
+  padding-right: 10px;
+
+}
+.save_button{
+  width:90px;
+  height: 25px;
+  padding-right: 10px;
+  margin-bottom: 2px;
+
+}
+
+.form-control-serch {
+  display: inline;
+  width: 70%;
   height: 34px;
   padding: 6px 12px;
   margin-bottom: 50px;
   margin-top: 10%;
-  margin-left: 20%;
+  //margin-left: 20%;
   font-size: 14px;
   line-height: 1.42857143;
   color: #555555;
@@ -5087,7 +5154,7 @@ a.badge:focus {
   color: inherit;
 }
 .jumbotron p {
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   font-size: 21px;
   font-weight: 200;
 }
@@ -5106,7 +5173,7 @@ a.badge:focus {
 @media screen and (min-width: 768px) {
   .jumbotron {
     padding-top: 48px;
-    padding-bottom: 48px;
+    padding-bottom: 98px;
   }
   .container .jumbotron,
   .container-fluid .jumbotron {

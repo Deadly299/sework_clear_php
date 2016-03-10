@@ -4,7 +4,7 @@ var suggest_selected = 0;
  
 $(window).load(function(){
     // читаем ввод с клавиатуры
-    $(".form-control").keyup(function(I){
+    $(".form-control-serch").keyup(function(I){
         // определяем какие действия нужно делать при нажатии на клавиатуру
         switch(I.keyCode) {
             // игнорируем нажатия на эти клавишы
@@ -42,10 +42,13 @@ $(window).load(function(){
     });
  
     //считываем нажатие клавишь, уже после вывода подсказки
-    $(".form-control").keydown(function(I){
+    $(".form-control-serch").keydown(function(I){
         switch(I.keyCode) {
             // по нажатию клавишь прячем подсказку
             case 13: // enter
+            $('.search_button').click();
+            return false;
+            
             case 27: // escape
                 $('#search_advice_wrapper').hide();
                 return false;
@@ -65,17 +68,44 @@ $(window).load(function(){
     // делаем обработку клика по подсказке
     $('.advice_variant').live('click',function(){
         // ставим текст в input поиска
-        $('.form-control').val($(this).text());
+        $('.form-control-serch').val($(this).text());
         // прячем слой подсказки
         $('#search_advice_wrapper').fadeOut(350).html('');
     });
+
+      /*$('.form-control-serch').keydown(function(){
+        alert('good');
+    });*/
+
+
+/*$('.form-control-serch').keydown( function(e){ 
+    
+    var enter = e.key ;
+    if(enter == == 'enter')
+    {
+            alert( ["enter => " + enter, "", "ctrl => "+ctrl ].join("\n") )
+
+    }
+    else
+    {
+
+    }
+    
+} )*/
+
+
+
+
+
+
+
  
     // если кликаем в любом месте сайта, нужно спрятать подсказку
     $('html').click(function(){
         $('#search_advice_wrapper').hide();
     });
     // если кликаем на поле input и есть пункты подсказки, то показываем скрытый слой
-    $('.form-control').click(function(event){
+    $('.form-control-serch').click(function(event){
         //alert(suggest_count);
         if(suggest_count)
             $('#search_advice_wrapper').show();
@@ -94,15 +124,15 @@ function key_activate(n){
  
     if( suggest_selected > 0){
         $('#search_advice_wrapper div').eq(suggest_selected-1).addClass('active');
-        $(".form-control").val( $('#search_advice_wrapper div').eq(suggest_selected-1).text() );
+        $(".form-control-serch").val( $('#search_advice_wrapper div').eq(suggest_selected-1).text() );
     } else {
-        $(".form-control").val( input_initial_value );
+        $(".form-control-serch").val( input_initial_value );
     }
 }
 /*$(function(){
     
     //Живой поиск
-    $('.form-control-serch').bind("change keyup input click", function() {
+    $('.form-control-serch-serch').bind("change keyup input click", function() {
         if(this.value.length >= 2){
             $.ajax({
                 type: 'post',
@@ -117,13 +147,13 @@ function key_activate(n){
     })
     
     $(".search_result").hover(function(){
-        $(".form-control-serch").blur(); //Убираем фокус с input
+        $(".form-control-serch-serch").blur(); //Убираем фокус с input
     })
     
     //При выборе результата поиска, прячем список и заносим выбранный результат в input
     $(".search_result").on("click", "li", function(){
         s_user = $(this).text();
-        //$(".form-control-serch").val(s_user).attr('disabled', 'disabled'); //деактивируем input, если нужно
+        //$(".form-control-serch-serch").val(s_user).attr('disabled', 'disabled'); //деактивируем input, если нужно
         $(".search_result").fadeOut();
     })
 

@@ -1,5 +1,5 @@
 <?php
-include("security/control.php");	
+//include("security/control.php");	
 require_once '../tcpdf/tcpdf.php'; // Подключаем библиотеку
 
 if(isset($_GET['id']))
