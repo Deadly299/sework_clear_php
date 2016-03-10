@@ -45,8 +45,8 @@
     <div class="row">
        <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li><h4>&nbspУправление работами</h4></li>
-            <li class="active"><a href="adminka.php">Добавить работу</a></li>
+          <li><h4>&nbspУправление работами</h4></li>
+            <li><a href="adminka.php">Добавить работу</a></li>
             <li><a href="archive_works.php">Архив работ</a></li>
             
           </ul>
@@ -61,14 +61,13 @@
             <li><a href="create_users.php">Добавить пользователя</a></li>
             <li><a href="list_users.php">Список пользователей</a></li>
           </ul>
-             </ul>
              <ul class="nav nav-sidebar">
             <li><h4>&nbspДополнительные настройки</h4></li>
             <li><a href="faculties.php">Факультеты</a></li>
-            <li><a href="list_users.php">Кафедры</a></li>
-            <li><a href="list_users.php">Код ОКСО</a></li>
-            <li><a href="list_users.php">Состав ШГПИ</a></li>
-            <li><a href="list_users.php">Студенты</a></li>
+            <li><a href="departments.php">Кафедры</a></li>
+            <li class="active"><a href="code_okso.php">Код ОКСО</a></li>
+            <li><a href="ped_composition.php">Состав ШГПИ</a></li>
+            <li><a href="studens.php">Студенты</a></li>
           </ul>
         </div>
 
@@ -84,12 +83,12 @@ if(isset($_POST['insert']))
   {
     $p1 = $_POST['1'];
     $p2 = $_POST['2'];
-    $p3 = date('j,n,Y');
+    $p3 = date('m.d.y');
     $p4 = 'no';
 
     $connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
       $res=pg_query($connect,"INSERT INTO code_okso (code, value,  date_create, not_valid) 
-        VALUES ('$p1','$p2','$p3', '$p4', );");
+        VALUES ('$p1','$p2','$p3', '$p4');");
       print '<h3 align="center"> <b>Факультет</b></h3>';
       print '<h3 align="center"> Успешно добавлен в базу данных!</h3>';
       header( "Refresh:2; url=code_okso.php", true, 303); 

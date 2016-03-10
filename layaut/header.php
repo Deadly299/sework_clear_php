@@ -56,9 +56,9 @@
              <ul class="nav nav-sidebar">
             <li><h4>&nbspДополнительные настройки</h4></li>
             <li><a href="faculties.php">Факультеты</a></li>
-            <li><a href="list_users.php">Кафедры</a></li>
-            <li><a href="list_users.php">Код ОКСО</a></li>
-            <li><a href="list_users.php">Состав ШГПИ</a></li>
-            <li><a href="list_users.php">Студенты</a></li>
+            <li><a href="departments.php">Кафедры</a></li>
+            <li><a href="code_okso.php">Код ОКСО</a></li>
+            <li><a href="ped_composition.php">Состав ШГПИ</a></li>
+            <li><a href="studens.php">Студенты</a></li>
           </ul>
         </div>

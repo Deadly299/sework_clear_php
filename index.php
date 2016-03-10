@@ -13,7 +13,7 @@
 
   <style type="text/css"></style></head>
 
-  <body>
+  <body >
 
     	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
 		<div class="container-fluid">
@@ -37,13 +37,27 @@
 	</div>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-      <div class="container">
+    <div class="jumbotron" >
+      
        
-		  <input type="text" name="serch" class="form-control-serch" placeholder="Поиск....." autocomplete="off">
-		  
+        <form action="index.php" method="GET" >
+             
+			  <div class="col-lg-6" >
+			    <div class="input-group">
+			      <input type="text" name ="search" class="form-control" autocomplete="off">
+			      <span class="input-group-btn">
+			        <button class="btn btn-default" type="submit" >Go!</button>
+			      </span>
+			    </div><!-- /input-group -->
+			  </div><!-- /.col-lg-6 -->
+			
+        </form>
+		<div class="search_area">
+        <div id="search_advice_wrapper"></div>
 
-		    <div class="search_result" align="center"></div>
+    	</div>
+
+
 		  
 		   
 <!-- <ul class="pagination">
@@ -56,18 +70,31 @@
   <li><a href="#">&raquo;</a></li>
 </ul>
  -->
-<?php 
-
-
-?>
 
  
 
-      </div>
+     
     </div>
+<?php 
+if (isset($_GET['search'])) 
+{
+	$search = $_GET['search'];
+	$connect= pg_connect("host=localhost port=5432 dbname=sework user=postgres password=postgres");
+	$db_referal = pg_query($connect, "SELECT  *FROM tamplate_vkr where subject  ilike '%$search%' LIMIT 20 ");
 
-  	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-	<link href="css/main.css" rel="stylesheet">
+
+	$row=pg_fetch_row($db_referal);
+	
+		print'<h4 align="center">Автор: '.$row[5].'</br> Тема: '.$row[2].'</br> Кафедра: '.$row[1].'</br> Дата: '.$row[18].'</h4>
+
+';
+   		//print $row[1];
+   		
+  			
+  	
+}	
+
+?>
+  	
 
 </body></html>

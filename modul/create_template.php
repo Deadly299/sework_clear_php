@@ -38,14 +38,14 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li><h4>&nbspУправление работами</h4></li>
-            <li class="active"><a href="adminka.php">Добавить работу</a></li>
+          <li><h4>&nbspУправление работами</h4></li>
+            <li><a href="adminka.php">Добавить работу</a></li>
             <li><a href="archive_works.php">Архив работ</a></li>
             
           </ul>
           <ul class="nav nav-sidebar">
             <li><h4>&nbspУправление шаблонами</h4></li>
-            <li><a href="create_template.php">Создать</a></li>
+            <li class="active"><a href="create_template.php">Создать</a></li>
             <li><a href="edit_template.php">Настроить шаблон работы</a></li>
         
           </ul>
@@ -53,6 +53,14 @@
             <li><h4>&nbspУправление пользователями</h4></li>
             <li><a href="create_users.php">Добавить пользователя</a></li>
             <li><a href="list_users.php">Список пользователей</a></li>
+          </ul>
+             <ul class="nav nav-sidebar">
+            <li><h4>&nbspДополнительные настройки</h4></li>
+            <li><a href="faculties.php">Факультеты</a></li>
+            <li><a href="departments.php">Кафедры</a></li>
+            <li><a href="code_okso.php">Код ОКСО</a></li>
+            <li><a href="ped_composition.php">Состав ШГПИ</a></li>
+            <li><a href="studens.php">Студенты</a></li>
           </ul>
         </div>
 
@@ -69,7 +77,7 @@ include("function/function_modul.php");
 
   if(isset($_POST['content']) and isset($_POST['id_fac']))
   {  
-     $date_create = date("j.n.Y"); 
+     $date_create = date('m.d.y');
      $html = $_POST['content'];
      $id_fac = $_POST['id_fac'];
      $type = $_POST['type'];

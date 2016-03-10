@@ -45,8 +45,8 @@
     <div class="row">
        <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-            <li><h4>&nbspУправление работами</h4></li>
-            <li class="active"><a href="adminka.php">Добавить работу</a></li>
+          <li><h4>&nbspУправление работами</h4></li>
+            <li><a href="adminka.php">Добавить работу</a></li>
             <li><a href="archive_works.php">Архив работ</a></li>
             
           </ul>
@@ -61,14 +61,13 @@
             <li><a href="create_users.php">Добавить пользователя</a></li>
             <li><a href="list_users.php">Список пользователей</a></li>
           </ul>
-             </ul>
              <ul class="nav nav-sidebar">
             <li><h4>&nbspДополнительные настройки</h4></li>
             <li><a href="faculties.php">Факультеты</a></li>
-            <li><a href="list_users.php">Кафедры</a></li>
-            <li><a href="list_users.php">Код ОКСО</a></li>
-            <li><a href="list_users.php">Состав ШГПИ</a></li>
-            <li><a href="list_users.php">Студенты</a></li>
+            <li><a href="departments.php">Кафедры</a></li>
+            <li><a href="code_okso.php">Код ОКСО</a></li>
+            <li class="active"><a href="ped_composition.php">Состав ШГПИ</a></li>
+            <li><a href="studens.php">Студенты</a></li>
           </ul>
         </div>
 
@@ -88,11 +87,11 @@ if(isset($_POST['insert']))
     $p4 = 'no';
 
     $connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
-      $res=pg_query($connect,"INSERT INTO faculties (name_fac, abbreviation, date_create, not_valid) 
+      $res=pg_query($connect,"INSERT INTO ped_composition (name_com, value, date_create, not_valid) 
         VALUES ('$p1','$p2','$p3', '$p4');");
       print '<h3 align="center"> <b>Факультет</b></h3>';
       print '<h3 align="center"> Успешно добавлен в базу данных!</h3>';
-      header( "Refresh:2; url=faculties.php", true, 303); 
+      header( "Refresh:2; url=ped_composition.php", true, 303); 
       exit;  
   }
 if(isset($_POST['save']))
@@ -105,24 +104,24 @@ if(isset($_POST['save']))
   if ($check != true)
    {
     $id = $_POST['0'];
-    $name_fac = $_POST['1'];
-    $abbreviation = $_POST['2'];
+    $name_com = $_POST['1'];
+    $value = $_POST['2'];
     $date_create = $_POST['3'];
     $not_valid = $_POST['4'];
 
 
       $connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
-      $update_user = pg_query($connect,"UPDATE faculties SET 
-name_fac='$name_fac',
-abbreviation='$abbreviation',
+      $update_user = pg_query($connect,"UPDATE ped_composition SET 
+name_com='$name_com',
+value='$value',
 date_create='$date_create',
 not_valid='$not_valid'
 WHERE id ='$id'
 ");
 
-    print '<h3 align="center"> <b>Факультет:</b> '.$name_fac.'</h3>';
+    print '<h3 align="center"> <b>Факультет:</b> '.$name_com.'</h3>';
     print '<h3 align="center"> Успешно изменен!</h3>';
-    header( "Refresh:2; url=faculties.php", true, 303); 
+    header( "Refresh:2; url=ped_composition.php", true, 303); 
     exit;     
    }
 
@@ -131,7 +130,7 @@ WHERE id ='$id'
   if(isset($_POST['esc']))
   { 
     print '<h3 align="center"> <b>Отмененно пользователем.</b></h3>';
-    header( "Refresh:2; url=faculties.php", true, 303); 
+    header( "Refresh:2; url=ped_composition.php", true, 303); 
     exit;
   }
 
@@ -139,31 +138,31 @@ WHERE id ='$id'
   {
     $delete = $_GET['delete'];
     $connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
-    $result_users = pg_query($connect,"DELETE FROM faculties WHERE id ='$delete'");
+    $result_users = pg_query($connect,"DELETE FROM ped_composition WHERE id ='$delete'");
      print '<h3 align="center"> <b>Факультет</b></h3>';
       print '<h3 align="center"> Удален из базы данных!</h3>';
-      header( "Refresh:2; url=faculties.php", true, 303); 
+      header( "Refresh:2; url=ped_composition.php", true, 303); 
       exit;     
   }
 
   if(isset($_GET['edit']))
   { 
     $edit = $_GET['edit'];
-    $arrayRow = array('0' => 'ID пользователя','1' => 'Название факультета', '2' => 'Абривиатура',
-         '3' => 'Дата создания', '4' => 'Дата отменны'  );
+   $arrayRow = array('0' => 'ID пользователя','1' => 'Ф.И.О ', '2' => 'Научная степень/звание',
+     '3' => 'Дата создания', '4' => 'Дата отменны'  );
  
     $connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
-    $result_faculties = pg_query($connect,"SELECT *FROM  faculties WHERE id ='$edit'");
+    $ped_composition = pg_query($connect,"SELECT *FROM  ped_composition WHERE id ='$edit'");
     print '<form class="form-horizontal" method ="POST">';
     
-    $mass_faculties = pg_fetch_row($result_faculties);
+    $ped_composition = pg_fetch_row($ped_composition);
    
       for ($i=1; $i <= 4 ; $i++) 
       { 
         print '<div class="form-group">
           <label class="control-label col-xs-3" for="lastName">'.$arrayRow[$i].':</label>
           <div class="col-xs-9">
-            <input type="text" name="'.$i.'" class="form-control" id="login" align="left" value="'.trim($mass_faculties[$i]).'" >
+            <input type="text" name="'.$i.'" class="form-control" id="login" align="left" value="'.trim($ped_composition[$i]).'" >
           </div>
         </div>';
       }
@@ -180,7 +179,7 @@ if(isset($_GET['add']))
     $connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
    
     print '<form class="form-horizontal" method ="POST">';
-    $arrayRow = array('0' => 'ID пользователя','1' => 'Название факультета', '2' => 'Абривиатура',
+    $arrayRow = array('0' => 'ID пользователя','1' => 'Ф.И.О ', '2' => 'Научная степень/звание',
      '3' => 'Дата создания', '4' => 'Дата отменны'  );
     for ($i=1; $i <= 2 ; $i++) 
       { 
@@ -204,12 +203,12 @@ if(isset($_GET['add']))
   {
     $id = $_GET['up'];
     $connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
-    $update_user = pg_query($connect,"UPDATE faculties SET 
+    $update_user = pg_query($connect,"UPDATE ped_composition SET 
       not_valid='no'
       WHERE id ='$id' ");
 
-    print '<h3 align="center"> <b>Факультет Актуален!</b></h3>';
-    header( "Refresh:2; url=faculties.php", true, 303); 
+    print '<h3 align="center"> <b> Сотрудник ШГПИ Актуален!</b></h3>';
+    header( "Refresh:2; url=ped_composition.php", true, 303); 
     exit;     
   }
     if(isset($_GET['down']))
@@ -217,12 +216,12 @@ if(isset($_GET['add']))
     $id = $_GET['down'];
     $date_create = date("m.d.y");
     $connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
-    $update_user = pg_query($connect,"UPDATE faculties SET 
+    $update_user = pg_query($connect,"UPDATE ped_composition SET 
       not_valid='$date_create'
       WHERE id ='$id' ");
 
-    print '<h3 align="center"> <b>Факультет перстал быть актуальным!</b> </h3>';
-    header( "Refresh:2; url=faculties.php", true, 303); 
+    print '<h3 align="center"> <b>Сотрудник перстал быть актуальным!</b> </h3>';
+    header( "Refresh:2; url=ped_composition.php", true, 303); 
     exit;     
   }
 
@@ -233,29 +232,29 @@ if(isset($_GET['add']))
 <!-- ///////////////////////////////////////////////////////////////////////////////////////// -->
 <table class="table table-striped">
 <?php
-  $arrayRow = array('0' => 'ID пользователя','1' => 'Название факультета', '2' => 'Абривиатура',
+  $arrayRow = array('0' => 'ID пользователя','1' => 'Ф.И.О ', '2' => 'Научная степень/звание',
      '3' => 'Дата создания', '4' => 'Дата отменны'  );
   $connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
 
-  $result_faculties = pg_query($connect,"SELECT  * FROM  faculties ORDER BY id ");
+  $ped_composition = pg_query($connect,"SELECT  * FROM  ped_composition ORDER BY id ");
     for ($b=0; $b <=4 ; $b++) 
     { 
        print '<td>'.trim($arrayRow[$b]).'</td>';
     }
     //print '<td> Добавить факультет</td>';
-    print '<td  colspan="2"> <a href="faculties.php?add=ok"><span class="glyphicon glyphicon-plus">Добавить</a></td>';
-    print '<td  colspan="2"> <a href="faculties.php?add=ok">Отменить: Да/Нет</a></td>';
-  while ($mass_faculties = pg_fetch_row($result_faculties))
+    print '<td  colspan="2"> <a href="ped_composition.php?add=ok"><span class="glyphicon glyphicon-plus">Добавить</a></td>';
+    print '<td  colspan="2"> <a href="ped_composition.php?add=ok">Отменить: Да/Нет</a></td>';
+  while ($mass_composition = pg_fetch_row($ped_composition))
    {
       print '<tr>';
       for ($i=0; $i <= 4 ; $i++) 
       { 
-        print '<td>'.trim($mass_faculties[$i]).'</td>';
+        print '<td>'.trim($mass_composition[$i]).'</td>';
       }
-      print '<td> <a href="faculties.php?edit='.$mass_faculties[0].'"><span class="glyphicon glyphicon-pencil  "></a></td>';
-      print '<td> <a href="faculties.php?delete='.$mass_faculties[0].'"><span class="glyphicon glyphicon-remove"></a></td>';
-      print '<td> <a href="faculties.php?up='.$mass_faculties[0].'"><span class="glyphicon glyphicon-thumbs-up"></a></td>';
-      print '<td> <a href="faculties.php?down='.$mass_faculties[0].'"><span class="glyphicon glyphicon-thumbs-down"></a></td>';
+      print '<td> <a href="ped_composition.php?edit='.$mass_composition[0].'"><span class="glyphicon glyphicon-pencil  "></a></td>';
+      print '<td> <a href="ped_composition.php?delete='.$mass_composition[0].'"><span class="glyphicon glyphicon-remove"></a></td>';
+      print '<td> <a href="ped_composition.php?up='.$mass_composition[0].'"><span class="glyphicon glyphicon-thumbs-up"></a></td>';
+      print '<td> <a href="ped_composition.php?down='.$mass_composition[0].'"><span class="glyphicon glyphicon-thumbs-down"></a></td>';
 
   
       print '</tr>';
