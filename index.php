@@ -39,10 +39,11 @@
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
       <div class="container">
-       
+       		<div align="center"  >
 		  <input type="text" name="serch" class="form-control-serch" placeholder="Поиск....." autocomplete="off">
-		  
+		  <button type="button" class="search_button"><span class="glyphicon glyphicon-search"></span> Найти</button>
 
+			</div>
 		    <div class="search_result" align="center"></div>
 		  
 		   

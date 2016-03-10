@@ -2591,14 +2591,20 @@ output {
   -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
+.search_button{
+  width:80px;
+  height: 35px;
+  padding-right: 10px;
+
+}
 .form-control-serch {
-  display: block;
-  width: 60%;
+  display: inline;
+  width: 70%;
   height: 34px;
   padding: 6px 12px;
   margin-bottom: 50px;
   margin-top: 10%;
-  margin-left: 20%;
+  //margin-left: 20%;
   font-size: 14px;
   line-height: 1.42857143;
   color: #555555;
