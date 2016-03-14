@@ -1,6 +1,6 @@
 
 <?php
-	$connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
+	$connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
 	
 	if(isset($_POST['id']) and isset($_POST['type']))
 	{

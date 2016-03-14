@@ -65,72 +65,136 @@
         </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h2 align="center">Создание шаблонов, для факультетов ШГПИ</h2>
+          
 
           <div class="row placeholders">
 
 <!-- ///////////////////////////////////////////////////////////////////////////////////////// -->
 <?php 
 
-include("function/function_modul.php");
+
+ if(isset($_POST['Save']))
+  {  
+    $id= $_POST['id'];
+    $content= $_POST['content'];
+    
+      $connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
+      $update_user = pg_query($connect,"UPDATE templates SET 
+      value ='$content'
+
+      WHERE id =$id
+      ");
+     print'<div class="alert alert-success">Внимание! Шаблон успешно загружен.</div>';
+     header( "Refresh:2; url=edit_template.php?edit=$id", true, 303); 
+     exit;
+      
+  }
+  if(isset($_POST['esc']))
+  { 
+    $esc = $_POST['esc'];
+    print'<div class="alert alert-success">Отменено пользователем</div>';
+    header( "Refresh:1; url=edit_template.php?edit=$esc", true, 303); 
+    exit;
+  }
+
+  if(isset($_POST['esc_adminka']))
+  { 
+    print'<div class="alert alert-success">Отменено пользователем</div>';
+    header( "Refresh:1; url=adminka.php", true, 303); 
+    exit;
+  }
+if(isset($_GET['edit']))
+{ 
+  print '<form name="myform" class="form_vkr" action="" method="POST" onsubmit="return save()">';
+  $edit = $_GET['edit'];
+  print '<h2 align="center">Правка шаблона</h2>';
+  $connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
+  $result_tem = pg_query($connect,"SELECT  id, value FROM templates WHERE id= $edit;");
+  $row_tem = pg_fetch_row($result_tem);
+  print'<input type="text" name= "id" value= "'.$edit.'" hidden="true" >';
 
 
+  print'<div class="content" align="center">
+  <textarea name="content" id="frameId" cols="45" rows="5">'.$row_tem[1].'</textarea>
+</div>
+<br>
+<div class="form_submit">
+      <button type="submit" name="Save" class="btn btn-primary">Создать шаблон</button>
+      <button type="submit" name="esc" value="'.$edit.'" class="btn btn-default">Отменить</button>
+
+     
+  </div>
+';
+
+}
+
+else 
+{
   if(isset($_POST['content']) and isset($_POST['id_fac']))
   {  
-     $date_create = date('m.d.y');
+    $id_fac = $_POST['id_fac'];
+    $connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
+
+  $list_fac = pg_query($connect, "SELECT  id,abbreviation FROM faculties WHERE id= $id_fac ");
+  $mass_fac=pg_fetch_row($list_fac);
+
+
+     $date_create =date("d/m/Y");
      $html = $_POST['content'];
      $id_fac = $_POST['id_fac'];
      $type = $_POST['type'];
      $html= strip_tags($html, '<p><a><colgroup><table><tbody><tr><td><b><strong><br>style="text-align: center; vertical-align: bottom;"');
-     $name_tem = 'Шаблон '.$id_fac.'  От: '.$date_create;
-     $col_param = Serch_string_html($_POST['content']);
+     $name_tem = 'Шаблон '.$mass_fac[1].'  от: '.$date_create;
+    
  
-      $connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
-      $res=pg_query($connect,"INSERT INTO templates (name_tem, value, id_fac, date_create, type, not_valid) VALUES ('$name_tem','$html','$id_fac', '$date_create','$type', 'no');");
+      $connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
+      $res=pg_query($connect,"INSERT INTO templates (name_tem, value, id_fac, date_create, type, not_valid) VALUES ('$name_tem','$html','$id_fac', '$date_create' ,$type, 'no');");
      print'<div class="alert alert-success">Внимание! Шаблон успешно загружен.</div>';
      header( "Refresh:3; url=create_template.php", true, 303);
       
   }
-
- ?> 
-<?php 
-$connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
-$list_fac = pg_query($connect, "SELECT  *FROM faculties WHERE not_valid = 'no' ");
-print '<h3 class="page-header" align="center">Тип шаблона</h3>';
-print '<form name="myform" class="form_vkr" action="" method="POST" onsubmit="return save()">';
-print '     <label class="checkbox-inline">
-              <input type="radio" id="radio-inline"  name="type" checked ="true" value="0"> - Курсовая работа  
-            </label>
-            <label class="checkbox-inline">
-              <input type="radio" id="radio-inline"  name="type" value="1"> - Дипломная работа 
-            </label></br></br>
-                       ';
-print '<h3 class="page-header" align="center">Факультеты</h3>';
+  print '<h2 align="center">Создание шаблонов, для факультетов ШГПИ</h2>';
+  $connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
+  $list_fac = pg_query($connect, "SELECT  *FROM faculties WHERE not_valid = 'no' ");
+  print '<h3 class="page-header" align="center">Тип шаблона</h3>';
+  print '<form name="myform" class="form_vkr" action="" method="POST" onsubmit="return save()">';
+  print '     <label class="checkbox-inline">
+                <input type="radio" id="radio-inline"  name="type" checked ="true" value="0"> - Курсовая работа  
+              </label>
+              <label class="checkbox-inline">
+                <input type="radio" id="radio-inline"  name="type" value="1"> - Дипломная работа 
+              </label></br></br>
+                         ';
+  print '<h3 class="page-header" align="center">Факультеты</h3>';
     while ($mass_fac=pg_fetch_row($list_fac))
     {     
       print'<label class="checkbox-inline">
                   <input type="radio" id="radio-inline"  name="id_fac" value="'.$mass_fac[0].'"> '.$mass_fac[2].'
             </label>';
     }
+     print'<div class="content" align="center">
+  <textarea name="content" id="frameId" cols="45" rows="5"></textarea>
+</div>
+<br>
+<div class="form_submit">
+      <button type="submit" name="Save_t" class="btn btn-primary">Создать шаблон</button>
+       <button type="submit" name="esc_adminka" class="btn btn-default">Отменить</button>';
+
+
+}
  ?>
 
 
 
 
-<div class="content" align="center">
-  <textarea name="content" id="frameId" cols="45" rows="5"></textarea>
-</div>
-<br>
+
   <script type="text/javascript">
     CKEDITOR.replace( 'frameId');
   </script>
 
 
 
-  <div class="form_submit">
-      <button type="submit" name="Save" class="btn btn-primary">Создать шаблон</button>
-      <!-- <button type="submit" name="Prewi" class="btn btn-default">Предварительный просмотр</button> -->
-  </div>
+  
 </form>
 
       

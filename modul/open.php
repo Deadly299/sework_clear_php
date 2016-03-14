@@ -1,57 +1,91 @@
 <?php
 //include("security/control.php");	
 require_once '../tcpdf/tcpdf.php'; // Подключаем библиотеку
-
 if(isset($_GET['id']))
 {
  	 $id = $_GET['id'];
  	 //$row = $_GET['row'];
- 	$connect= pg_connect("host=localhost port=5432 dbname=sework user=postgres password=postgres");
-
+ 	$connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
 	$result_works = pg_query(" SELECT 
 id,
-chair,
-subject,
-code_okso,
-specialty,
+subject, 
 executor,
-groups,
-sex,
-office,
-name_head,
-rank_head,
-name_normative,
-rank_normative,
-name_head_chair,
-rank_head_chair,
-rank_consultant,
+groups, 
+consultant, 
 date_def,
-open 
-FROM tamplate_vkr WHERE id ='$id';");// Запрос к выбраной работе
+id_dep,
+id_code,
+id_qual,
+id_head,
+id_head_chair,
+id_normal,
+sex, 
+office, 
+id_template
+	FROM vkr_works WHERE id ='$id';");// Запрос к выбраной работе
+	
 		$mass_works = pg_fetch_row($result_works);
 		//print_r($mass_works);exit();
-	$result_tamplate = pg_query("SELECT * FROM setting WHERE id ='$mass_works[17]';");// Запрос к шаблону
+	$result_tamplate = pg_query("SELECT * FROM templates WHERE id ='$mass_works[14]';");// Запрос к шаблону
 		$mass_tamplate=pg_fetch_row($result_tamplate);
 		//print_r($mass_works);exit;
 	$html= strip_tags($mass_tamplate[2], '<p><a><colgroup><table><tbody><tr><td><b><strong><br>');
 
+//-----------------------------------------------
+	$result_departments = pg_query(" SELECT name_dep, abbreviation FROM departments WHERE id ='$mass_works[6]';");
+		$mass_departments = pg_fetch_row($result_departments);
 
+	$result_id_code = pg_query(" SELECT *FROM code_okso  WHERE id ='$mass_works[7]';");
+		$mass_id_code = pg_fetch_row($result_id_code);
 
+	$result_id_qual = pg_query(" SELECT name_qual, value FROM qualification  WHERE id ='$mass_works[8]';");
+		$mass_id_qual = pg_fetch_row($result_id_qual);		
+
+	$result_id_head = pg_query(" SELECT name_com, value FROM ped_composition WHERE id ='$mass_works[9]';");
+		$mass_id_head = pg_fetch_row($result_id_head);	
+
+	$result_id_head_chaid = pg_query(" SELECT name_com, value FROM ped_composition WHERE id ='$mass_works[10]';");
+		$mass_id_head_chaid = pg_fetch_row($result_id_head_chaid);		
+	
+	$result_id_normal = pg_query(" SELECT name_com, value FROM ped_composition WHERE id ='$mass_works[11]';");
+		$mass_id_normal = pg_fetch_row($result_id_normal);					
+//-----------------------------------------------
 
 	$arrayTag = array(
-'1' =>'(КАФЕДРА)' ,'2' => '(ТЕМА)' ,'3' => '(КОДОKCO)','4' => '(СПЕЦИАЛЬНОСТЬ)','5' => '(Ф.И.О ИИСПОЛНИТЕЛЯ)',
-'6' => '(ГРУППА)','7' => '(ПОЛ)','8' => '(ОТДЕЛЕНИЕ)','9' => '(Ф.И.О Н.РУКОВОДИТЕЛЯ)','10' => '(СТЕПЕНЬ Н.РУКОВОДИТЕЛЯ)',
-'11' => '(Ф.И.О НОРМАКОНТРОЛЕРА)' ,'12' => '(СТЕПЕНЬ НОРМАКОНТРОЛЕРА)' ,'13' => '(Ф.И.О ЗАВ.КАФЕДРЫ)' ,'14' => '(СТЕПЕНЬ ЗАВ.КАФЕРДЫ)',
-'15' =>'(КОНСУЛЬТАНТЫ)', '16' =>'(ДАТА ЗАЩИТЫ)'
-
-);
-	for ($i=1; $i <= 16; $i++) 
+	'1' =>'(ТЕМА)' ,'2' => '(ИСПОЛНИТЕЛЬ)' ,'3' => '(ГРУППА)','4' => '(КОНСУЛЬТАНТЫ)',
+	'5' => '(ДАТАЗАЩИТЫ)','6' => '(КАФЕДРА)','7' => '(КОДОКСО)','8' => '(КВАЛИФИКАФИЯ)','9' => '(РУКОВОДИТЕЛЬ)',
+	'10' => '(ЗАВ.КАФЕДРЫ)' ,'11' => '(НОРМАКОНТРОЛЕР)' ,'12' => '(ПОЛ)' ,'13' => '(ОТДЕЛЕНИЕ)','14' => '(ДАТА)');
+	for ($i=1; $i <= 4; $i++) 
 	{ 
 				//$html = str_replace($arrayTag[$i] , $mass_works[$i], $html);
-				$html = preg_replace($arrayTag[$i] , $mass_works[$i], $html);
-		
+				 $html = preg_replace($arrayTag[$i] , $mass_works[$i], $html);	
 		//print $arrayTag[$i] .'-'. $mass_works[$i];
-	}
+	} 
+
+
+	$html = preg_replace($arrayTag[6] , $mass_departments[0], $html);
+	$html = preg_replace($arrayTag[7] , $mass_id_code[1].' «'.$mass_id_code[2].'»', $html);
+	$html = preg_replace($arrayTag[8] , $mass_id_qual[0], $html);
+	$html = preg_replace($arrayTag[9] , $mass_id_head[1].'<br><b>'.$mass_id_head[0].'</b>', $html);
+	$html = preg_replace($arrayTag[10] , $mass_id_head_chaid[1].'<br><b>'.$mass_id_head_chaid[0].'</b>', $html);
+	$html = preg_replace($arrayTag[11] , $mass_id_normal[1].'<br><b>'.$mass_id_normal[0].'</b>', $html);
+	if($mass_works[12]=='0')
+	{
+		 $html = preg_replace($arrayTag[12] , '', $html);
+	}else  $html = preg_replace($arrayTag[12] , 'ка', $html);
+
+	if($mass_works[13]=='0')
+	{
+		$html = preg_replace($arrayTag[13] , 'очного', $html);
+	}else $html = preg_replace($arrayTag[13] , 'заочного', $html);
+	
+	 $d = substr($mass_works[5], 8, 10);
+	 $m = substr($mass_works[5], 5, -3);
+	 $g = substr($mass_works[5], 0, 4);
+
+	$date_def ='«'.$d.'» '.$m.' '.$g.' год'; 
+	$html = preg_replace($arrayTag[5] , $date_def, $html);
+	$html = preg_replace($arrayTag[14] , $g, $html);
 	//exit;
 } elseif (isset($_GET['show'])) 
 {
@@ -66,8 +100,11 @@ FROM tamplate_vkr WHERE id ='$id';");// Запрос к выбраной раб�
 
 
 }
-else {
-	print 'Error 402'; exit;
+else
+{
+	print'<div class="alert alert-success"> <h1 align="center"> ERROR 402</h1>	</div>';
+    header( "Refresh:2; url=adminka.php", true, 303); 
+    exit;
 }	
 
 
@@ -75,6 +112,7 @@ else {
 	$result2 = pg_query($connect, "SELECT  *FROM setting WHERE id ='$html'");
 	$row2=pg_fetch_row($result2);
 	$html= strip_tags($row2[2], '<p><a><colgroup><table><tbody><tr><td><b>');*/
+
 
 
   	$pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8');

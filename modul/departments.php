@@ -84,7 +84,7 @@ if(isset($_POST['insert']))
   {
     $p1 = $_POST['1'];
     $p2 = $_POST['2'];
-    $p3 = date('j,n,Y');
+    $p3 = date("d/m/Y");
     $p4 = 'no';
 
     $connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
@@ -92,7 +92,7 @@ if(isset($_POST['insert']))
         VALUES ('$p1','$p2','$p3', '$p4');");
       print '<h3 align="center"> <b>Кафедра</b></h3>';
       print '<h3 align="center"> Успешно добавлен в базу данных!</h3>';
-      header( "Refresh:2; url=departments.php", true, 303); 
+      header( "Refresh:1; url=departments.php", true, 303); 
       exit;  
   }
 if(isset($_POST['save']))

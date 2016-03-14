@@ -30,9 +30,6 @@
 					<li><a href="#">Выйти</a></li>
 					<li><a href="#">Help</a></li>
 				</ul>
-				<form class="navbar-form navbar-right">
-					<input type="text" class="form-control" placeholder="Search...">
-				</form>
 			</div>
 		</div>
 	</div>
@@ -72,7 +69,7 @@
 
 
 					<div class="row placeholders ">
-
+					<?php if(!isset($_GET['open'])) exit; ?>
 
 						<div class="panel panel-default">
 							<div class="panel-heading">
@@ -83,15 +80,71 @@
 									<form action="" method="GET">
 										<div class="well well-lg">
 											<p align="center">Кафедра</p> 
-											<input type="text" name="chair" class="form-control" placeholder="Кафедра программирования и автоматизации бизнес-процессов">
+											<select name="id_dep" class="form-control">
+											<option value="0" style="background-color:#A88F8F;">Выберете кафедру</option>
+<?php 
+$connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
+	$open = $_GET['open'];
+	//Шаблон
+	$result_tem = pg_query($connect,"SELECT  id, value, id_fac, type FROM templates WHERE id= $open;");
+	$row_tem = pg_fetch_row($result_tem);
+	//Кафедры
+	$result_dep = pg_query($connect,"SELECT  *FROM departments WHERE id_fac='$row_tem[2]'");
+    while ($row_dep = pg_fetch_row($result_dep))
+    {
+      print '<option style ="background-color:#DDCECE;" value="'.$row_dep[0].'">';
+        print $row_dep[1];
+      print"</option>";
+    }
+
+
+ ?>
+
+</select>
+
+<!-- <select class="form-control">
+<option value="0" style="background-color:#A88F8F;">Выберете кафедру</option>
+</select> -->
+											<!-- <input type="text" name="chair" class="form-control" placeholder="Кафедра программирования и автоматизации бизнес-процессов"> -->
 											<p align="center">Тема</p> 
 											<input type="text" name="subject" id="searchbox" class="form-control" placeholder="Разработка системы управления курсовыми и дипломными работами. ">
 											<div  align="center"> 
 
 												<p class="leftstr">Код ОКСО</p>
 												<p class="rightstr">Cпециальность / Направление </p>
-												<input type="text" name="code_okso" class="form-control-smile" placeholder="09.09.03">      
-												<input type="text" name="specialty" id="searchbox" class="form-control-smile" placeholder=" «Прикладная информатика в экономике»">
+												<select name="code_okso" class="form-control">
+												<option  value="0" style="background-color:#A88F8F;">Выберете код ОКСО</option>
+<?php 
+$result_cod = pg_query($connect,"SELECT  *FROM code_okso WHERE id_fac='$row_tem[2]'");
+    while ($row_cod = pg_fetch_row($result_cod))
+    {
+      print '<option name="code_okso" style ="background-color:#DDCECE;" value="'.$row_cod[0].'">';
+        print $row_cod[1].': '.$row_cod[2];
+      print"</option>";
+    }
+
+
+ ?>		
+
+												</select>
+														
+												
+												<select name="id_qual" class="form-control">
+												<option  value="0" style="background-color:#A88F8F;">Выберете код ОКСО</option>
+<?php 
+$result_cod = pg_query($connect,"SELECT  *FROM qualification ");
+    while ($row_cod = pg_fetch_row($result_cod))
+    {
+      print '<option name="code_okso" style ="background-color:#DDCECE;" value="'.$row_cod[0].'">';
+        print $row_cod[1];
+      print"</option>";
+    }
+
+
+ ?>		
+
+												</select>
+
 												<p align="center">Ф.И.О Исполнителя</p> 
 												<input type="text" name="executor" class="form-control" placeholder="Арченков Павел Владимирович">
 												<p align="center">Группа</p> 
@@ -116,71 +169,99 @@
 													</label>
 												</div><br>
 
-												<p align="center">Научный руководитель</p> 
+												<p align="center">Руководители</p> 
+												 <hr>
+												<p class="leftstr">Научный руководитель:</p>
+												<p class="rightstr">Нормаконтролер:</p>
+												<select name="head" class="form-control-smile">
+												<option value="0" style="background-color:#A88F8F;">Научный руководитель</option>
+<?php 
+$result_cod = pg_query($connect,"SELECT  *FROM ped_composition");
+    while ($row_cod = pg_fetch_row($result_cod))
+    {
+      print '<option style ="background-color:#DDCECE;" value="'.$row_cod[0].'">';
+        print $row_cod[1];
+      print"</option>";
+    }
+
+
+ ?>		
+												</select>
+
+							<select name="normative" class="form-control-smile">
+												<option value="0" style="background-color:#A88F8F;">Нормаконтролер</option>
+<?php 
+$result_cod = pg_query($connect,"SELECT  *FROM ped_composition");
+    while ($row_cod = pg_fetch_row($result_cod))
+    {
+      print '<option style ="background-color:#DDCECE;" value="'.$row_cod[0].'">';
+        print $row_cod[1];
+      print"</option>";
+    }
+
+
+ ?>		
+												</select>
+
+
+												
+
+												<p align="center">Консультант(ы):</p> 
 												<p class="leftstr">Ф.И.О</p>
 												<p class="rightstr">Ученая степень / ученое звание</p>
-												<input type="text" name="name_head"  class="form-control-smile" placeholder="Пирогов Владислав Юрьевич">      
-												<input type="text" name="rank_head"  class="form-control-smile" placeholder="канд. физ-мат. наук, доцент">
+<?php 
+for ($c=1; $c <= 4 ; $c++) 
+{ 
+	if($c==1) $check = 'checked'; else $check = '';
+print '
+<div>
+<label class="checkbox-inline">
+<input type="checkbox" id="radio-inline" '.$check.' name="status_consultant_'.$c.'" value="'.$c.'">№'.$c.':
+</label>
+<select name="consultant_'.$c.'" class="form-control-cons">
+<option  value="0" style="background-color:#A88F8F;">Консультант №'.$c.'</option>';
 
-												<p align="center">Нормаконтроль</p> 
-												<p class="leftstr">Ф.И.О</p>
-												<p class="rightstr">Ученая степень / ученое звание</p>
-												<input type="text" name="name_normative"  class="form-control-smile" placeholder="Иванов Иван Иванович">      
-												<input type="text" name="rank_normative"  class="form-control-smile" placeholder="канд. физ-мат. наук, доцент">
+$result_cod = pg_query($connect,"SELECT  *FROM ped_composition");
+    while ($row_cod = pg_fetch_row($result_cod))
+    {
+      print '<option style ="background-color:#DDCECE;" value="'.$row_cod[2].' : '.$row_cod[1].'">';
+        print $row_cod[2].$row_cod[1];
+      print"</option>";
+    }
+print '</select>
+</div>';
 
+print'<input type="text" name="open" value="'.$_GET['open'].'" hidden="true" > ';
 
-
-												<p align="center">Консультант(ы)</p> 
-												<p class="leftstr">Ф.И.О</p>
-												<p class="rightstr">Ученая степень / ученое звание</p>
-												<div>
-													<label class="checkbox-inline">
-														<input type="checkbox" id="radio-inline" checked="true" name="status_consultant_1" value="1">№1:
-													</label>
-													<input type="text" name="name_consultant_1" class="form-control-smile" placeholder="Петров Петр Петрович"> 
-													<input type="text" name="rank_consultant_1" class="form-control-smile" placeholder="Кандидат.пед.наук">
-
-
-												</div>
-
-												<div>
-													<label class="checkbox-inline">
-														<input type="checkbox" id="radio-inline"  name="status_consultant_2" value="1">№2:
-													</label>
-													<input type="text" name="name_consultant_2" class="form-control-smile" placeholder="Петров Петр Петровичь"> 
-													<input type="text" name="rank_consultant_2" class="form-control-smile" placeholder="Кандидат.пед.наук">
+}
+ ?>
+	
 
 
-												</div>
-												<div>
-													<label class="checkbox-inline">
-														<input type="checkbox" id="radio-inline"  name="status_consultant_3" value="1">№3:
-													</label>
-													<input type="text" name="name_consultant_3" class="form-control-smile" placeholder="Петров Петр Петровичь"> 
-													<input type="text" name="rank_consultant_3" class="form-control-smile" placeholder="Кандидат.пед.наук">
 
-
-												</div>
-												<div>
-													<label class="checkbox-inline">
-														<input type="checkbox" id="radio-inline"  name="status_consultant_4" value="1">№4:
-													</label>
-													<input type="text" name="name_consultant_4" class="form-control-smile" placeholder="Петров Петр Петровичь"> 
-													<input type="text" name="rank_consultant_4" class="form-control-smile" placeholder="Кандидат.пед.наук">
-
-
-												</div>
-
-												<p align="center">Зав.Кафедрой</p> 
+												<p align="center">Зав.Кафедрой:</p> 
 												<p class="leftstr">Ф.И.О</p>
 												<p class="rightstr">Ученая степень / ученое звание</p>
 												<div>
-													<input type="text" name="name_head_chair" class="form-control-smile" placeholder="09.09.03"> 
-													<input type="text" name="rank_head_chair" class="form-control-smile" placeholder="09.09.03">	
+													<select name="head_chair" class="form-control-cons">
+												<option value="0" style="background-color:#A88F8F;">Зав.Кафедрой</option>
+<?php 
+$result_cod = pg_query($connect,"SELECT  *FROM ped_composition");
+    while ($row_cod = pg_fetch_row($result_cod))
+    {
+      print '<option style ="background-color:#DDCECE;" value="'.$row_cod[0].'">';
+        print $row_cod[1];
+      print"</option>";
+    }
+
+
+ ?>		
+												</select>
 												</div>
 
 												<p class="rightstr">Допущен(a) к защите</p>
 												<input type="date" name="date_def" class="form-control-smile"> 
+
 												
 
 
@@ -199,131 +280,76 @@
 						</div>
 <?php 	
 include("security/control.php");
+ 
+
+
+
 if(isset($_GET['Save']))
 {							 
 	if(
 
-$_GET['chair']!='' and 
+$_GET['id_dep']!='' and 
 $_GET['subject']!='' and
 $_GET['code_okso']!='' and
-$_GET['specialty']!='' and
 $_GET['executor']!='' and
 $_GET['groups']!='' and
 $_GET['sex']!='' and
 $_GET['office']!='' and
-$_GET['name_head']!='' and
-$_GET['rank_head']!='' and
-$_GET['name_normative']!='' and
-$_GET['rank_normative']!='' and
-$_GET['name_consultant_1']!='' and
-$_GET['rank_consultant_1']!='' and
-/*$_GET['name_consultant_2']!='' and
-$_GET['rank_consultant_2']!='' and
-$_GET['name_consultant_3']!='' and
-$_GET['rank_consultant_3']!='' and
-$_GET['name_consultant_4']!='' and
-$_GET['rank_consultant_4']!='' and*/
-$_GET['name_head_chair']!='' and
-$_GET['rank_head_chair']!='' and
+$_GET['id_qual']!='' and
+$_GET['head']!='' and
+$_GET['normative']!='' and
+$_GET['consultant_1']!='' and
+$_GET['head_chair']!='' and
 $_GET['open']!='' and
-$_GET['date_def']
-		)
-/*$_GET['status_consultant_1']!='' and
-$_GET['status_consultant_2']!='' and
-$_GET['status_consultant_3']!='' and
-$_GET['status_consultant_4']!='')*/
-	{
-$chair = $_GET['chair'];
-$subject = $_GET['subject'];
-$code_okso = $_GET['code_okso'];
-$specialty = $_GET['specialty'];
-$executor = $_GET['executor'];
-$groups = $_GET['groups'];
-$sex = $_GET['sex'];
-$office = $_GET['office'];
-$name_head = $_GET['name_head'];
-$rank_head = $_GET['rank_head'];
-$name_normative = $_GET['name_normative'];
-$rank_normative = $_GET['rank_normative'];
-$name_head_chair = $_GET['name_head_chair'];
-$rank_head_chair = $_GET['rank_head_chair'];
-$open = $_GET['open'];
-$date_def = $_GET['date_def'];
+$_GET['date_def'])
+
+{
+	$consultant='';
+	
+	$subject = $_GET['subject'];
+	$executor = $_GET['executor'];
+	$id_dep = $_GET['id_dep'];
+	$id_code = $_GET['code_okso'];
+	$groups = $_GET['groups'];
+	$sex = $_GET['sex'];
+	$office = $_GET['office'];
+	$id_qual = $_GET['id_qual'];
+	$id_head = $_GET['head'];
+	$id_head_chair = $_GET['head_chair'];
+	$id_normal = $_GET['normative'];
+	$id_template = $_GET['open'];
+	$date_def = $_GET['date_def'];
+
+//print $consultant = $_GET['consultant_1'].'</br>';
 
 
-/*for ($i=4; $i >= 2; $i--) 
+for ($i=1; $i <= 4; $i++) 
 { 
-	if($_GET['status_consultant_'.$i.'']!='')
-	{
-		$col_consultant = $i;
-		break;
-	}
-}*/
-
-$consultant = $_GET['rank_consultant_1'].'<br><strong>'.$_GET['name_consultant_1'].'</strong><br>';
-for ($i=2; $i < 4; $i++) 
-{ 
-	 if(
-		 	isset($_GET['status_consultant_'.$i.''])!='' and 
-		 	$_GET['name_consultant_'.$i.'']!=''
-	 	) 
+	 if(isset($_GET['consultant_'.$i.''])!='' ) 
 	 {
-		  $consultant .= $_GET['rank_consultant_'.$i.''].'</br>'.$_GET['name_consultant_'.$i.''].'</br>';	
+	 		if ($_GET['consultant_'.$i.'']!='0')
+	 		 {
+	 			$consultant .= preg_replace('(:)', '<br><b>',$_GET['consultant_'.$i.'']).'</b><br>';	
+	 		 }
+	 	  //$html = preg_replace(':', '</br>',$_GET['rank_consultant_'.$i.'']);
+		 
 	 } else break;
 }
+//print($consultant);
 
 
 
 
-
-
-
-
-
-
-
-
-$connect = pg_connect("host=localhost port=5432 dbname=sework user=postgres password=postgres");
-		$insert_vkr = pg_query($connect,"INSERT INTO tamplate_vkr (
-chair,
-subject,
-code_okso,
-specialty,
-executor,
-groups,
-sex,
-office,
-name_head,
-rank_head,
-name_normative,
-rank_normative,
-name_head_chair,
-rank_head_chair,
-rank_consultant,
-open,
-date_def
-) VALUES 
-(
-'$chair',
-'$subject',
-'$code_okso',
-'$specialty',
-'$executor',
-'$groups',
-'$sex',
-'$office',
-'$name_head',
-'$rank_head',
-'$name_normative',
-'$rank_normative',
-'$name_head_chair',
-'$rank_head_chair',
-'$consultant',
-'$open',
-'$date_def'
-
-);");
-
+$connect = pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
+		$insert_vkr = pg_query($connect,"INSERT INTO vkr_works 
+(subject,executor,id_dep,id_code,groups,sex,office,id_qual,id_head,
+id_head_chair,id_normal,id_template,consultant,date_def) 
+VALUES 
+('$subject','$executor','$id_dep','$id_code','$groups','$sex','$office','$id_qual',
+'$id_head','$id_head_chair','$id_normal','$id_template','$consultant','$date_def');");
+  
+  header( "location:load_work.php?open=$id_template"); 
+  exit;  
 
 	}
 }
@@ -349,7 +375,7 @@ date_def
 
 
 
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+		
 		<script src="bootstrap.min.js"></script>
 		<script src="docs.min.js"></script>
 	</body>

@@ -28,7 +28,7 @@ if(isset($_GET['user']) and isset($_GET['password']))
    if ($row_users!=false)
    {  
 
-      if ($row_users[3] == 777 )
+      if ($row_users[3] == 777 )//Вот как админ обозначаеться
       {
        print '<h3 align="center"> <b>Добро пожаловать! '.$row_users[4].'</b></h3>';
        print '<h3 align="center"> Вам доступны все права для управления системой Sework</h3>';

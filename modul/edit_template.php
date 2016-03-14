@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,7 +46,7 @@
     <div class="row">
        <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-          <li><h4>&nbspУправление работами</h4></li>
+            <li><h4>&nbspУправление работами</h4></li>
             <li><a href="adminka.php">Добавить работу</a></li>
             <li><a href="archive_works.php">Архив работ</a></li>
             
@@ -53,7 +54,7 @@
           <ul class="nav nav-sidebar">
             <li><h4>&nbspУправление шаблонами</h4></li>
             <li><a href="create_template.php">Создать</a></li>
-            <li><a href="edit_template.php">Настроить шаблон работы</a></li>
+            <li class="active"><a href="edit_template.php">Настроить шаблон работы</a></li>
         
           </ul>
           <ul class="nav nav-sidebar">
@@ -61,18 +62,19 @@
             <li><a href="create_users.php">Добавить пользователя</a></li>
             <li><a href="list_users.php">Список пользователей</a></li>
           </ul>
+             </ul>
              <ul class="nav nav-sidebar">
             <li><h4>&nbspДополнительные настройки</h4></li>
-            <li><a href="faculties.php">Факультеты</a></li>
+            <li><a href="templates.php">Факультеты</a></li>
             <li><a href="departments.php">Кафедры</a></li>
             <li><a href="code_okso.php">Код ОКСО</a></li>
-            <li class="active"><a href="ped_composition.php">Состав ШГПИ</a></li>
+            <li><a href="ped_composition.php">Состав ШГПИ</a></li>
             <li><a href="studens.php">Студенты</a></li>
           </ul>
         </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h3 class="page-header" align="center">Список факультетов</h3>
+          <h3 class="page-header" align="center">Список шаблонов</h3>
           <!-- <div class="alert alert-info" align="center">Внимание! Заполните все необходимые поля, и проверте их достоверность. </div>   -->
 
 
@@ -83,45 +85,47 @@ if(isset($_POST['insert']))
   {
     $p1 = $_POST['1'];
     $p2 = $_POST['2'];
-    $p3 = date('j,n,Y');
+    $p3 =date("d/m/Y");
     $p4 = 'no';
 
     $connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
-      $res=pg_query($connect,"INSERT INTO ped_composition (name_com, value, date_create, not_valid) 
-        VALUES ('$p1','$p2','$p3', '$p4');");
+      $res=pg_query($connect,"INSERT INTO templates (name_fac, abbreviation, date_create, not_valid) 
+        VALUES ('$p1','$p2','$p3','$p4');");
       print '<h3 align="center"> <b>Факультет</b></h3>';
       print '<h3 align="center"> Успешно добавлен в базу данных!</h3>';
-      header( "Refresh:2; url=ped_composition.php", true, 303); 
+      header( "Refresh:2; url=edit_template.php", true, 303); 
       exit;  
   }
 if(isset($_POST['save']))
 { 
   $check = false;
-  for ($i=0; $i <= 4 ; $i++) 
+  for ($i=0; $i <= 5 ; $i++) 
   { 
     if($_POST[$i] ==''){ $check = true;}
   }
   if ($check != true)
    {
     $id = $_POST['0'];
-    $name_com = $_POST['1'];
-    $value = $_POST['2'];
-    $date_create = $_POST['3'];
-    $not_valid = $_POST['4'];
+     $par1 = $_POST['1'];
+     $par2 = $_POST['2'];
+     $par3 = $_POST['3'];
+     $par4 = $_POST['4'];
+     $par5 = $_POST['5'];
 
 
       $connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
-      $update_user = pg_query($connect,"UPDATE ped_composition SET 
-name_com='$name_com',
-value='$value',
-date_create='$date_create',
-not_valid='$not_valid'
+      $update_user = pg_query($connect,"UPDATE templates SET 
+name_tem='$par1',
+type ='$par2',
+id_fac=$par3,
+date_create='$par4',
+not_valid='$par5'
 WHERE id ='$id'
 ");
 
-    print '<h3 align="center"> <b>Факультет:</b> '.$name_com.'</h3>';
+    print '<h3 align="center"> <b>Факультет:</b> '.$par1.'</h3>';
     print '<h3 align="center"> Успешно изменен!</h3>';
-    header( "Refresh:; url=ped_composition.php", true, 303); 
+    header( "Refresh:2; url=edit_template.php", true, 303); 
     exit;     
    }
 
@@ -130,7 +134,7 @@ WHERE id ='$id'
   if(isset($_POST['esc']))
   { 
     print '<h3 align="center"> <b>Отмененно пользователем.</b></h3>';
-    header( "Refresh:2; url=ped_composition.php", true, 303); 
+    header( "Refresh:2; url=edit_template.php", true, 303); 
     exit;
   }
 
@@ -138,90 +142,111 @@ WHERE id ='$id'
   {
     $delete = $_GET['delete'];
     $connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
-    $result_users = pg_query($connect,"DELETE FROM ped_composition WHERE id ='$delete'");
+    $result_users = pg_query($connect,"DELETE FROM templates WHERE id ='$delete'");
      print '<h3 align="center"> <b>Факультет</b></h3>';
       print '<h3 align="center"> Удален из базы данных!</h3>';
-      header( "Refresh:2; url=ped_composition.php", true, 303); 
+      header( "Refresh:1; url=edit_template.php", true, 303); 
       exit;     
   }
 
   if(isset($_GET['edit']))
   { 
     $edit = $_GET['edit'];
-   $arrayRow = array('0' => 'ID пользователя','1' => 'Ф.И.О ', '2' => 'Научная степень/звание',
-     '3' => 'Дата создания', '4' => 'Дата отменны'  );
- 
+    $arrayRow = array('0' => 'ID','1' => 'Название Шаблона', '2' => 'Тип Шаблона',
+    '3' => 'Для факультета', '4' => 'Дата создания', '5' => 'Дата отменны'  );
+
     $connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
-    $ped_composition = pg_query($connect,"SELECT *FROM  ped_composition WHERE id ='$edit'");
+    $result_templates = pg_query($connect,"SELECT id,name_tem,type,id_fac,date_create,not_valid FROM  templates WHERE id ='$edit'");
     print '<form class="form-horizontal" method ="POST">';
     
-    $ped_composition = pg_fetch_row($ped_composition);
+    $mass_templates = pg_fetch_row($result_templates);
    
-      for ($i=1; $i <= 4 ; $i++) 
+      for ($i=1; $i <= 5 ; $i++) 
       { 
+
+        if($i==2)
+        {
+          print '<h4  align="center">Тип шаблона</h4>';
+
+          print'<label class="checkbox-inline">
+              <input type="radio" id="radio-inline"  name="'.$i.'" checked ="true" value="0"> - Курсовая работа  
+            </label>
+            <label class="checkbox-inline">
+              <input type="radio" id="radio-inline"  name="'.$i.'" value="1"> - Дипломная работа 
+            </label></br></br>';
+            continue;
+        }
+        
+        if($i==3)
+        { $connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
+      
+      print '<div class="form-group">
+          <label class="control-label col-xs-3" for="lastName">Факультеты:</label>
+          <div class="col-xs-9">
+            <select  name="id_dep" class="form-control">
+      <option value="0" style="background-color:#A88F8F;">Выберете факультет</option>';
+
+          $result_dep3 = pg_query($connect,"SELECT  *FROM faculties WHERE not_valid='no' ");
+           while ($row_dep = pg_fetch_row($result_dep3)) 
+           {
+              print '<option style ="background-color:#DDCECE;" value="'.$row_dep[0].'">';
+                print $row_dep[1];
+              print"</option>";
+           }            
+ 
+        print '</select>
+          </div>
+        </div>';
+      //print'<div align="center">';
+          
+        //print '</div>';
+        continue;
+        }
+
+
         print '<div class="form-group">
           <label class="control-label col-xs-3" for="lastName">'.$arrayRow[$i].':</label>
           <div class="col-xs-9">
-            <input type="text" name="'.$i.'" class="form-control" id="login" align="left" value="'.trim($ped_composition[$i]).'" >
+            <input type="text" name="'.$i.'" class="form-control" id="login" align="left" value="'.trim($mass_templates[$i]).'" >
           </div>
         </div>';
       }
+       print '<a href="create_template.php?edit='.$mass_templates[0].'"><h4 style="margin-bottom:10px;">Изменить содержимое шаблона</h4></a>';
     
 print'<input type="text" name= "0" value= "'.$edit.'" hidden="true" >';
+
 print '
       <input type="submit" name="save" class="btn btn-primary" value="Сохранить">
       <input type="submit" name ="esc" class="btn btn-default" value="Отмена">
 </form></br>';
    exit;
   }
-if(isset($_GET['add']))
-  {
-    $connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
-   
-    print '<form class="form-horizontal" method ="POST">';
-    $arrayRow = array('0' => 'ID пользователя','1' => 'Ф.И.О ', '2' => 'Научная степень/звание',
-     '3' => 'Дата создания', '4' => 'Дата отменны'  );
-    for ($i=1; $i <= 2 ; $i++) 
-      { 
-        print '<div class="form-group">
-          <label class="control-label col-xs-3" for="lastName">'.$arrayRow[$i].':</label>
-          <div class="col-xs-9">
-            <input type="text" name="'.$i.'" class="form-control" id="login" align="left"  >
-          </div>
-        </div>';
-       
 
-      }
-       print '
-      <input type="submit" name="insert" class="btn btn-primary" value="Сохранить">
-      <input type="submit" name ="esc" class="btn btn-default" value="Отмена">
-      </form></br>';
-      exit;
-  }
+
 
   if(isset($_GET['up']))
   {
     $id = $_GET['up'];
     $connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
-    $update_user = pg_query($connect,"UPDATE ped_composition SET 
+    $update_user = pg_query($connect,"UPDATE templates SET 
       not_valid='no'
       WHERE id ='$id' ");
 
-    print '<h3 align="center"> <b> Сотрудник ШГПИ Актуален!</b></h3>';
-    header( "Refresh:2; url=ped_composition.php", true, 303); 
+    print '<h3 align="center"> <b>Факультет Актуален!</b></h3>';
+    header( "Refresh:2; url=edit_template.php", true, 303); 
     exit;     
   }
     if(isset($_GET['down']))
   {
     $id = $_GET['down'];
-    $date_create = date("m.d.y");
+    $date_create =date("d/m/Y");
     $connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
-    $update_user = pg_query($connect,"UPDATE ped_composition SET 
+    $update_user = pg_query($connect,"UPDATE templates SET 
       not_valid='$date_create'
       WHERE id ='$id' ");
 
-    print '<h3 align="center"> <b>Сотрудник перстал быть актуальным!</b> </h3>';
-    header( "Refresh:2; url=ped_composition.php", true, 303); 
+    print '<h3 align="center"> <b>Факультет перстал быть актуальным!</b> </h3>';
+    header( "Refresh:2; url=edit_template.php", true, 303); 
     exit;     
   }
 
@@ -232,29 +257,50 @@ if(isset($_GET['add']))
 <!-- ///////////////////////////////////////////////////////////////////////////////////////// -->
 <table class="table table-striped">
 <?php
-  $arrayRow = array('0' => 'ID пользователя','1' => 'Ф.И.О ', '2' => 'Научная степень/звание',
-     '3' => 'Дата создания', '4' => 'Дата отменны'  );
+  $arrayRow = array('0' => 'ID пользователя','1' => 'Название Шаблона', '2' => 'Тип Шаблона',
+    '3' => 'Для факультета', '4' => 'Дата создания', '5' => 'Дата отменны'  );
   $connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
 
-  $ped_composition = pg_query($connect,"SELECT  * FROM  ped_composition ORDER BY id ");
-    for ($b=0; $b <=4 ; $b++) 
+  $result_templates = pg_query($connect,"SELECT  id,name_tem,type,id_fac,date_create,not_valid FROM  templates ORDER BY id ");
+  
+    for ($b=0; $b <=5 ; $b++) 
     { 
+      
        print '<td>'.trim($arrayRow[$b]).'</td>';
     }
     //print '<td> Добавить факультет</td>';
-    print '<td  colspan="2"> <a href="ped_composition.php?add=ok"><span class="glyphicon glyphicon-plus">Добавить</a></td>';
-    print '<td  colspan="2"> <a href="ped_composition.php?add=ok">Отменить: Да/Нет</a></td>';
-  while ($mass_composition = pg_fetch_row($ped_composition))
-   {
+     print '<td  colspan="2"> <a href="create_template.php"><span class="glyphicon glyphicon-plus">Добавить</a></td>';
+    print '<td  colspan="2"> Отменить: Да/Нет</td>';
+  while ($mass_templates = pg_fetch_row($result_templates))
+   {  
+       $result_fac = pg_query($connect,"SELECT  id,abbreviation FROM  faculties WHERE id='$mass_templates[3]'");
+       $mass_fac = pg_fetch_row($result_fac);
       print '<tr>';
-      for ($i=0; $i <= 4 ; $i++) 
+      for ($i=0; $i <= 5 ; $i++) 
       { 
-        print '<td>'.trim($mass_composition[$i]).'</td>';
+        if($i==3)
+        {
+           print '<td>'.trim($mass_fac[1]).'</td>';
+           continue;
+        }
+        if($i==2)
+        {
+           if($mass_templates[2]=='0')
+           {
+              print '<td>Курсовая</td>';
+              continue;
+           }else 
+            {
+              print '<td>ВКР</td>';
+              continue;
+            }
+        }
+        print '<td>'.trim($mass_templates[$i]).'</td>';
       }
-      print '<td> <a href="ped_composition.php?edit='.$mass_composition[0].'"><span class="glyphicon glyphicon-pencil  "></a></td>';
-      print '<td> <a href="ped_composition.php?delete='.$mass_composition[0].'"><span class="glyphicon glyphicon-remove"></a></td>';
-      print '<td> <a href="ped_composition.php?up='.$mass_composition[0].'"><span class="glyphicon glyphicon-thumbs-up"></a></td>';
-      print '<td> <a href="ped_composition.php?down='.$mass_composition[0].'"><span class="glyphicon glyphicon-thumbs-down"></a></td>';
+      print '<td> <a href="edit_template.php?edit='.$mass_templates[0].'"><span class="glyphicon glyphicon-pencil  "></a></td>';
+      print '<td> <a href="edit_template.php?delete='.$mass_templates[0].'"><span class="glyphicon glyphicon-remove"></a></td>';
+      print '<td> <a href="edit_template.php?up='.$mass_templates[0].'"><span class="glyphicon glyphicon-thumbs-up"></a></td>';
+      print '<td> <a href="edit_template.php?down='.$mass_templates[0].'"><span class="glyphicon glyphicon-thumbs-down"></a></td>';
 
   
       print '</tr>';
@@ -262,7 +308,6 @@ if(isset($_GET['add']))
  ?>  
 </table>
  
-<img src="" alt="">
 
           
 <!-- ///////////////////////////////////////////////////////////////////////////////////////// -->    

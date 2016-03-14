@@ -83,7 +83,7 @@ if(isset($_POST['insert']))
   {
     $p1 = $_POST['1'];
     $p2 = $_POST['2'];
-    $p3 = date('m.d.y');
+    $p3 = date("d/m/Y");
     $p4 = 'no';
 
     $connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");

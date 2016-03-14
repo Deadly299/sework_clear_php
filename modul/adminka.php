@@ -25,7 +25,7 @@ include("security/control.php");
 	<option value=""></option>
 <?php
 
-$connect= pg_connect("host=localhost port=5432 dbname=sework_new user=postgres password=postgres");
+$connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
 
    $result2 = pg_query($connect, "SELECT  *FROM faculties");
     while ($row2=pg_fetch_row($result2))
