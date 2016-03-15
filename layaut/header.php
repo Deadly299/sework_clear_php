@@ -39,7 +39,8 @@
           <ul class="nav nav-sidebar">
             <li><h4>&nbspУправление работами</h4></li>
             <li class="active"><a href="adminka.php">Добавить работу</a></li>
-            <li><a href="archive_works.php">Архив работ</a></li>
+            <li><a href="archive_vkr_works.php">Архив дипломных работ</a></li>
+            <li><a href="archive_kurs_works.php">Архив курсовых работ</a></li>
             
           </ul>
           <ul class="nav nav-sidebar">

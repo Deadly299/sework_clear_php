@@ -47,7 +47,8 @@
           <ul class="nav nav-sidebar">
           <li><h4>&nbspУправление работами</h4></li>
             <li><a href="adminka.php">Добавить работу</a></li>
-            <li><a href="archive_works.php">Архив работ</a></li>
+            <li><a href="archive_vkr_works.php">Архив дипломных работ</a></li>
+            <li><a href="archive_kurs_works.php">Архив курсовых работ</a></li>
             
           </ul>
           <ul class="nav nav-sidebar">
@@ -72,7 +73,7 @@
         </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h3 class="page-header" align="center">Список факультетов</h3>
+          <h3 class="page-header" align="center">Архив Кодов ОКСО</h3>
           <!-- <div class="alert alert-info" align="center">Внимание! Заполните все необходимые поля, и проверте их достоверность. </div>   -->
 
 

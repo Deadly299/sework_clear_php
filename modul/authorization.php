@@ -64,7 +64,7 @@ if(isset($_GET['user']) and isset($_GET['password']))
         <input type="text" name="user" class="form-control" placeholder="Login..." required autofocus>
         <input type="password" name="password" class="form-control" placeholder="Password..." required>
         <label class="checkbox">
-          <input type="checkbox" value="remember-me"> Запомнить меня
+          <a href="../index.php">Вернуться</a>
         </label>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
       </form>

@@ -5,8 +5,8 @@ if(!empty($_GET['query']))
     $array = array();
     //$array[] = $query;
    
- 	$connect= pg_connect("host=localhost port=5432 dbname=sework user=postgres password=postgres");
-	$db_referal = pg_query($connect, "SELECT  subject 	FROM tamplate_vkr where subject  ilike '%$query%' LIMIT 20 ");
+ 	$connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
+	$db_referal = pg_query($connect, "SELECT  subject 	FROM vkr_works where subject  ilike '%$query%' LIMIT 20 ");
 
 
 	while ($row=pg_fetch_row($db_referal))

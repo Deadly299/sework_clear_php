@@ -26,7 +26,7 @@
 				</button>
 				<a class="navbar-brand" href="#">Sework</a>
 			</div>
-			<div class="navbar-collapse collapse">
+			<div class="navbar-collapse collapse" >
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="modul/authorization.php">Управление</a></li>
 					<li><a href="#">Help</a></li>
@@ -37,21 +37,21 @@
 	</div>
 
 
-    <div class="jumbotron">
-      <div class="container">
+    <div class="jumbotron" >
+      <div class="container" >
        		<div align="center"  >
        		<form action="index.php" method="GET" >
              	<input type="text" name="page" value="1" hidden="true">
 			  <input type="text" name="search" class="form-control-serch" placeholder="Поиск....." autocomplete="off">
 		  <button type="submit" class="search_button"><span class="glyphicon glyphicon-search"></span> Найти</button>
-		<div class="search_area">
-        <div id="search_advice_wrapper"></div>
+		<div class="search_area" >
+        <div id="search_advice_wrapper" ></div>
 			</div>
         </form>
 		
 		  
 			
-		    <div class="search_result" align="center"></div>
+		    <div class="search_result" align="center" ></div>
 
 		  
 		   
@@ -77,8 +77,8 @@ if (isset($_GET['search']) AND isset($_GET['page']))
 	{
 		$col=0;
 	$search = $_GET['search'];
-	$connect= pg_connect("host=localhost port=5432 dbname=sework user=postgres password=postgres");
-	$db_referal = pg_query($connect, "SELECT  subject 	FROM tamplate_vkr where subject  ilike '%$search%' ");
+	$connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
+	$db_referal = pg_query($connect, "SELECT  subject FROM vkr_works where subject  ilike '%$search%' ");
 
 	   		//print $row[1];$col=0;
 	while ($row2=pg_fetch_row($db_referal))
@@ -93,7 +93,7 @@ if (isset($_GET['search']) AND isset($_GET['page']))
 				{	
 					$page = $_GET['page']-1;//Тут ты этот номер страныцы умножаешь на 10(так как 10 записей хочешь выводить) 
 					$page = $page*10;
-					$res=pg_query($connect," SELECT * FROM tamplate_vkr  where subject  ilike '%$search%'
+					$res=pg_query($connect," SELECT * FROM vkr_works  where subject  ilike '%$search%'
 				   ORDER BY id 
 				   OFFSET '$page' LIMIT 10;");//Вот тут в запросе ты и подставлеяешь $page(с какой строки начинать)
 				
@@ -148,7 +148,7 @@ if (isset($_GET['search']) AND isset($_GET['page']))
 
 	   	{	
 			  	$search = $_GET['search'];
-				$db_referal = pg_query($connect, "SELECT  *	FROM tamplate_vkr where subject  ilike '%$search%' ");
+				$db_referal = pg_query($connect, "SELECT  *	FROM vkr_works where subject  ilike '%$search%' ");
 
 			   		//print $row[1];$col=0;
 				print '<p class="page-header" align="center">Результатов: <b>'.$col.'</b> </p>';
@@ -157,13 +157,12 @@ if (isset($_GET['search']) AND isset($_GET['page']))
 				print '<div class="result_div" align="center">';
 
 
-				print '<a href="modul/open.php?id='.$row2[0].'"><h4 class="page-header" align="center">'.$row2[2].'</h4></a>	';
+				print '<a href="modul/open.php?id='.$row2[0].'"><h4 class="page-header" align="center">'.$row2[1].'</h4></a>	';
 
 				//print' <h3 class="page-header" align="center">Добавление пользователя</h3>';
-				print '<p style="font-size: 17px;color:#160909;" align="left"><b>Автор:</b> '.$row2[5].'</p>';
-				print '<p style="font-size: 17px;color:#160909;" align="left"><b>Кафедра:</b> '.$row2[1].'</p>';
-				print '<p style="font-size: 17px;color:#160909;" align="left"><b>Группа:</b> '.$row2[6].'</p>';
-				print '<p style="font-size: 17px;color:#160909;" align="left"><b>Год:</b> '.$row2[18].'</p>';
+				print '<p style="font-size: 17px;color:#160909;" align="left"><b>Автор:</b> '.$row2[2].'</p>';
+				print '<p style="font-size: 17px;color:#160909;" align="left"><b>Группа:</b> '.$row2[5].'</p>';
+				print '<p style="font-size: 17px;color:#160909;" align="left"><b>Год:</b> '.$row2[13].'</p>';
 				print '<div align="right">
 				 
 				 <button type="submit" class="save_button"><span class="glyphicon glyphicon-save"></span> Скачать</button>

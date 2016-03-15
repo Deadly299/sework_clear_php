@@ -40,7 +40,8 @@
 				 <ul class="nav nav-sidebar">
 		          <li><h4>&nbspУправление работами</h4></li>
 		            <li class="active"><a href="adminka.php">Добавить работу</a></li>
-		            <li><a href="archive_works.php">Архив работ</a></li>
+		            <li><a href="archive_vkr_works.php">Архив дипломных работ</a></li>
+		            <li><a href="archive_kurs_works.php">Архив курсовых работ</a></li>
 		            
 		          </ul>
 		          <ul class="nav nav-sidebar">
@@ -216,16 +217,16 @@ for ($c=1; $c <= 4 ; $c++)
 print '
 <div>
 <label class="checkbox-inline">
-<input type="checkbox" id="radio-inline" '.$check.' name="status_consultant_'.$c.'" value="'.$c.'">№'.$c.':
+<input type="checkbox" id="radio-inline" '.$check.' name="s_cons_'.$c.'" >№'.$c.':
 </label>
-<select name="consultant_'.$c.'" class="form-control-cons">
+<select name="n_cons_'.$c.'" class="form-control-cons">
 <option  value="0" style="background-color:#A88F8F;">Консультант №'.$c.'</option>';
 
 $result_cod = pg_query($connect,"SELECT  *FROM ped_composition");
     while ($row_cod = pg_fetch_row($result_cod))
     {
       print '<option style ="background-color:#DDCECE;" value="'.$row_cod[2].' : '.$row_cod[1].'">';
-        print $row_cod[2].$row_cod[1];
+        print $row_cod[1];
       print"</option>";
     }
 print '</select>
@@ -287,7 +288,7 @@ include("security/control.php");
 if(isset($_GET['Save']))
 {							 
 	if(
-
+/*
 $_GET['id_dep']!='' and 
 $_GET['subject']!='' and
 $_GET['code_okso']!='' and
@@ -298,9 +299,11 @@ $_GET['office']!='' and
 $_GET['id_qual']!='' and
 $_GET['head']!='' and
 $_GET['normative']!='' and
-$_GET['consultant_1']!='' and
+$_GET['n_cons_1']!='' and
 $_GET['head_chair']!='' and
-$_GET['open']!='' and
+$_GET['open']!='' and*/
+$_GET['n_cons_1']!='' and
+$_GET['s_cons_1']=='on' and
 $_GET['date_def'])
 
 {
@@ -325,28 +328,32 @@ $_GET['date_def'])
 
 for ($i=1; $i <= 4; $i++) 
 { 
-	 if(isset($_GET['consultant_'.$i.''])!='' ) 
+	 if(isset($_GET['n_cons_'.$i.''])!='' AND isset($_GET['s_cons_'.$i.''])=='on' ) 
 	 {
-	 		if ($_GET['consultant_'.$i.'']!='0')
-	 		 {
-	 			$consultant .= preg_replace('(:)', '<br><b>',$_GET['consultant_'.$i.'']).'</b><br>';	
-	 		 }
-	 	  //$html = preg_replace(':', '</br>',$_GET['rank_consultant_'.$i.'']);
-		 
-	 } else break;
+	 	//$arrayCons[$i] = preg_replace('(:)' , '<br><b>' , $_GET['n_cons_'.$i.'']);	
+		//$arrayCons[$i] = $arrayCons[$i].'</b></br>';
+		$arrayCons[$i] = $_GET['n_cons_'.$i.''];	 
+	 } else $arrayCons[$i] = 'NULL';
 }
-//print($consultant);
 
-
-
-
+	
 $connect = pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
+
+		$insert_cons = pg_query($connect,"INSERT INTO consultants 
+		(n_cons_1, n_cons_2, n_cons_3, n_cons_4) 
+		VALUES 
+		('$arrayCons[1]','$arrayCons[2]','$arrayCons[3]','$arrayCons[4]');");
+
+$result_cons = pg_query($connect,"SELECT  id FROM  consultants ORDER BY id DESC  ");
+$mass_cons = pg_fetch_row($result_cons);
+$id_cons = $mass_cons[0];
+
 		$insert_vkr = pg_query($connect,"INSERT INTO vkr_works 
 (subject,executor,id_dep,id_code,groups,sex,office,id_qual,id_head,
-id_head_chair,id_normal,id_template,consultant,date_def) 
+id_head_chair,id_normal,id_template,id_cons,date_def) 
 VALUES 
 ('$subject','$executor','$id_dep','$id_code','$groups','$sex','$office','$id_qual',
-'$id_head','$id_head_chair','$id_normal','$id_template','$consultant','$date_def');");
+'$id_head','$id_head_chair','$id_normal','$id_template',$id_cons,'$date_def');");
   
   header( "location:load_work.php?open=$id_template"); 
   exit;  
