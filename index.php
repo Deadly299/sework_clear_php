@@ -3,15 +3,18 @@
 <head>
     <meta charset="utf-8">
 
-   <!--  <link rel="shortcut icon" href="http://bootstrap-3.ru/assets/ico/favicon.ico"> -->
-	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-	<link href="css/main.css" rel="stylesheet">
-	<script src="js/jquery-1.6.4.min.js"></script>
-	<script src="js/modul/search.js"></script>
+  
+   <!-- <script data-require="jquery@2.1.1" data-semver="2.1.1" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>  -->
+
+<script src="js/jquery-1.12.1.js"></script>
+<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="css/main.css" rel="stylesheet">
+<script src="bootstrap/js/bootstrap.js"></script>
+
+<script src="js/modul/search.js"></script> 
     <title>Sework</title>
 
-  <style type="text/css"></style></head>
+  </head>
 
   <body >
 
@@ -37,37 +40,101 @@
 	</div>
 
 
-    <div class="jumbotron" >
-      <div class="container" >
-       		<div align="center"  >
-       		<form action="index.php" method="GET" >
-             	<input type="text" name="page" value="1" hidden="true">
-			  <input type="text" name="search" class="form-control-serch" placeholder="Поиск....." autocomplete="off">
-		  <button type="submit" class="search_button"><span class="glyphicon glyphicon-search"></span> Найти</button>
-		<div class="search_area" >
-        <div id="search_advice_wrapper" ></div>
-			</div>
-        </form>
-		
-		  
-			
-		    <div class="search_result" align="center" ></div>
+<div class="jumbotron" >
+<!-- 
+<div class="container" > -->
+<div align="center"  >
 
-		  
-		   
-<!-- <ul class="pagination">
-  <li><a href="#">&laquo;</a></li>
-  <li><a href="#">1</a></li>
-  <li><a href="#">2</a></li>
-  <li><a href="#">3</a></li>
-  <li><a href="#">4</a></li>
-  <li><a href="#">5</a></li>
-  <li><a href="#">&raquo;</a></li>
+
+
+<div class="tabs">
+<h4>Выберите метод поиска</h4>
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#tab-1" data-toggle="tab" >Простой</a></li>
+  <li><a href="#tab-2" data-toggle="tab" >Динамический</a></li> 
+  <li><a href="#tab-3" data-toggle="tab" >Расширенный</a></li>
 </ul>
- -->
 
- </div>
+<div class="tab-content"><br>
+		
+	<div class="tab-pane fade in active" id="tab-1">
+	<form action="index.php" method="GET" >
+		 <p align="center">Выберете место поиска</p><br> 
+		<div align="center">
+			<label class="checkbox-inline">
+				<input type="checkbox" id="checkbox-inline"  name="vkr" value="1"> - Выпускная квалификационная работа 
+			</label>
+			<label class="checkbox-inline">
+				<input type="checkbox" id="checkbox-inline"  name="kurs" value="1"> - Курсовая работа(проект) 
+			</label>
+		</div><br>
+		 <p align="center">Выберете облать поиска по: </p><br> 
+	 <select name="id_dep" class="form-control-1">
+		 <option value="0" > Ключевым словам</option>
+		 <option value="0" > Дате</option>
+		 <option value="0" > Автору работы</option>
+		 <option value="0" > Факультету </option>
+		 <option value="0" > Кафедре</option>
+		 <option value="0" > Названию темы</option>
+		 <option value="0" > Группе</option>
+		 <option value="0" > Персоналу ШГПУ</option>
+	 </select> 
+	 <p align="center">Что искать</p><br> 
+	 <input type="text" name="search" class="form-control-serch-1" placeholder="Поиск....." autocomplete="off">
+ 		<button type="submit" class="search_button"><span class="glyphicon glyphicon-search"></span> Найти</button>							</form>
+	</div>
+	<div class="tab-pane fade " id="tab-2"><!-- 2 -TAB  -->
+		<p>Вводите все необходимые слова для поиска.</p>
+		<input type="text" name="page" value="1" hidden="true">
+	  	<input type="text" name="search" class="form-control-serch" placeholder="Поиск....." autocomplete="off">
+ 		<button type="submit" class="search_button"><span class="glyphicon glyphicon-search"></span> Найти</button>
+ 		<div class="search_area" >
+<div id="search_advice_wrapper" >
+	</div>
+	<div class="tab-pane fade " id="tab-3"><!-- 1 -TAB  -->
+		<div class="tabs">
+			<ul class="nav nav-tabs nav-justified">
+			  <li class="active"><a href="#tab-3-1" data-toggle="tab" >Фильтр №1</a></li>
+			  <li><a href="#tab-3-2" data-toggle="tab" >Фильтр №2</a></li> 
+			  <li><a href="#tab-3-3" data-toggle="tab" >Фильтр №3</a></li>
+			</ul>	
+		</div><!-- /tabs in 3  -->
+		<div class="tab-content">
+		  <div class="tab-pane fade " id="tab-3-1">
+			<form action="index.php" method="GET" >
+				dfds
+		  </div>
+		  <div class="tab-pane fade " id="tab-3-2">
+			
+				fds
+				
+		  </div>
+		  <div class="tab-pane fade " id="tab-3-3">
+			
+				dfs
+
+			</form>
+		  </div>
+			
+	</div><!-- /tab-pane fade  -->
+  </div><!-- /tab-content  -->
 </div>
+
+</div>
+
+
+
+</div>
+</div><!-- /search_area  --> 
+
+
+
+<div class="search_result" align="center" ></div>
+
+		  
+
+ <!-- </div>/container -->
+</div><!-- /jumbotron  -->
      
     
 <?php 

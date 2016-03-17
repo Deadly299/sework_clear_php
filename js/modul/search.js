@@ -68,7 +68,7 @@ $(window).load(function(){
     // делаем обработку клика по подсказке
     $('.advice_variant').live('click',function(){
         // ставим текст в input поиска
-        $('.form-control-serch').val($(this).text());
+        $('.form-control-serch-1').val($(this).text());
         // прячем слой подсказки
         $('#search_advice_wrapper').fadeOut(350).html('');
     });
