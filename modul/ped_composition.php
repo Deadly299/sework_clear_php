@@ -73,7 +73,7 @@
         </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h3 class="page-header" align="center">Список факультетов</h3>
+          <h3 class="page-header" align="center">Список сотрудников</h3>
           <!-- <div class="alert alert-info" align="center">Внимание! Заполните все необходимые поля, и проверте их достоверность. </div>   -->
 
 

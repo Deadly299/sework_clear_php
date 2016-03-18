@@ -1,6 +1,6 @@
 <?php 
 include("../layaut/header.php");
-include("function/db_connection.php");
+//include("function/db_connection.php");
 include("security/control.php");
   
  ?>

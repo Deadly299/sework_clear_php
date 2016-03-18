@@ -50,14 +50,14 @@
           <ul class="nav nav-sidebar">
             <li><h4>&nbspУправление работами</h4></li>
             <li><a href="adminka.php">Добавить работу</a></li>
-            <li><a href="archive_vkr_works.php">Архив дипломных работ</a></li>
+            <li class="active"><a href="archive_vkr_works.php">Архив дипломных работ</a></li>
             <li><a href="archive_kurs_works.php">Архив курсовых работ</a></li>
             
           </ul>
           <ul class="nav nav-sidebar">
             <li><h4>&nbspУправление шаблонами</h4></li>
             <li><a href="create_template.php">Создать</a></li>
-            <li class="active"><a href="edit_template.php">Настроить шаблон работы</a></li>
+            <li><a href="edit_template.php">Настроить шаблон работы</a></li>
         
           </ul>
           <ul class="nav nav-sidebar">
