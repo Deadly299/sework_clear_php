@@ -49,29 +49,23 @@
             <li><h4>&nbspУправление работами</h4></li>
             <li><a href="adminka.php">Добавить работу</a></li>
             <li><a href="archive_vkr_works.php">Архив дипломных работ</a></li>
-            <li><a href="archive_kurs_works.php">Архив курсовых работ</a></li>
+            <li class="active"><a href="archive_kurs_works.php">Архив курсовых работ</a></li>
             
           </ul>
-          <ul class="nav nav-sidebar">
-            <li><h4>&nbspУправление шаблонами</h4></li>
-            <li><a href="create_template.php">Создать</a></li>
-            <li class="active"><a href="edit_template.php">Настроить шаблон работы</a></li>
-        
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><h4>&nbspУправление пользователями</h4></li>
-            <li><a href="create_users.php">Добавить пользователя</a></li>
-            <li><a href="list_users.php">Список пользователей</a></li>
-          </ul>
-             </ul>
-             <ul class="nav nav-sidebar">
-            <li><h4>&nbspДополнительные настройки</h4></li>
-            <li><a href="faculties.php">Факультеты</a></li>
-            <li><a href="departments.php">Кафедры</a></li>
-            <li><a href="code_okso.php">Код ОКСО</a></li>
-            <li><a href="ped_composition.php">Состав ШГПИ</a></li>
-            <li><a href="studens.php">Студенты</a></li>
-          </ul>
+                <?php 
+             
+              if ($_SESSION['user']=='Admin')
+              {
+                print'<ul class="nav nav-sidebar">
+                <li><h4>&nbspУправление пользователями</h4></li>
+                <li><a href="create_users.php">Добавить пользователя</a></li>
+                <li><a href="list_users.php">Список пользователей</a></li>
+              </ul>';
+              }
+
+               ?>
+             
+             
         </div>
 
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

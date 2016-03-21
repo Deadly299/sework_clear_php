@@ -3,11 +3,16 @@
 <head>
 	<meta charset="utf-8">
 	<title>Добавление Работы</title>
-	<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	<link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
-	
-	<script type="text/javascript" src="../js/jquery-1.6.4.min.js"></script>
+    <link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
 	<link href="../bootstrap/css/dashboard.css" rel="stylesheet">
+
+	<script type="text/javascript" src="../js/jquery-1.12.1.js"></script>
+	<script type="text/javascript" src="../bootstrap/js/bootstrap.js"></script>
+	<script src="../js/jquery-ui.js"></script>
+	<script src="../js/jquery.ui.datepicker-ru.js"></script>
+	
+	<link rel="stylesheet" href="../css/jquery-ui.css">
+	<script src="../js/modul/search.js"></script> >
 </head>
 
 <body>
@@ -44,25 +49,21 @@
 		            <li><a href="archive_kurs_works.php">Архив курсовых работ</a></li>
 		            
 		          </ul>
-		          <ul class="nav nav-sidebar">
-		            <li><h4>&nbspУправление шаблонами</h4></li>
-		            <li><a href="create_template.php">Создать</a></li>
-		            <li><a href="edit_template.php">Настроить шаблон работы</a></li>
-		        
-		          </ul>
-		          <ul class="nav nav-sidebar">
+		          <?php 
+		          include("security/control.php");
+		          //session_start();
+		          if ($_SESSION['user']=='Admin')
+		          {
+		          	print'<ul class="nav nav-sidebar">
 		            <li><h4>&nbspУправление пользователями</h4></li>
 		            <li><a href="create_users.php">Добавить пользователя</a></li>
 		            <li><a href="list_users.php">Список пользователей</a></li>
-		          </ul>
-		             <ul class="nav nav-sidebar">
-		            <li><h4>&nbspДополнительные настройки</h4></li>
-		            <li><a href="faculties.php">Факультеты</a></li>
-		            <li><a href="departments.php">Кафедры</a></li>
-		            <li><a href="code_okso.php">Код ОКСО</a></li>
-		            <li><a href="ped_composition.php">Состав ШГПИ</a></li>
-		            <li><a href="studens.php">Студенты</a></li>
-		          </ul>
+		          </ul>';
+		          }
+
+		           ?>
+		          
+		            
 				</div>
 				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 					<h3 class="page-header" align="center">Добавление работы</h3>
@@ -80,28 +81,7 @@
 								<div align="center">
 									<form action="" method="GET">
 										<div class="well well-lg">
-											<p align="center">Кафедра</p> 
-											<select name="id_dep" class="form-control">
-											<option value="0" style="background-color:#A88F8F;">Выберете кафедру</option>
-<?php 
-$connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
-	$open = $_GET['open'];
-	//Шаблон
-	$result_tem = pg_query($connect,"SELECT  id, value, id_fac, type FROM templates WHERE id= $open;");
-	$row_tem = pg_fetch_row($result_tem);
-	//Кафедры
-	$result_dep = pg_query($connect,"SELECT  *FROM departments WHERE id_fac='$row_tem[2]'");
-    while ($row_dep = pg_fetch_row($result_dep))
-    {
-      print '<option style ="background-color:#DDCECE;" value="'.$row_dep[0].'">';
-        print $row_dep[1];
-      print"</option>";
-    }
-
-
- ?>
-
-</select>
+											
 
 <!-- <select class="form-control">
 <option value="0" style="background-color:#A88F8F;">Выберете кафедру</option>
@@ -111,64 +91,31 @@ $connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres passw
 											<input type="text" name="subject" id="searchbox" class="form-control" placeholder="Разработка системы управления курсовыми и дипломными работами. ">
 											<div  align="center"> 
 
-												<p class="leftstr">Код ОКСО</p>
-												<p class="rightstr">Cпециальность / Направление </p>
-												<select name="code_okso" class="form-control">
-												<option  value="0" style="background-color:#A88F8F;">Выберете код ОКСО</option>
-<?php 
-$result_cod = pg_query($connect,"SELECT  *FROM code_okso WHERE id_fac='$row_tem[2]'");
-    while ($row_cod = pg_fetch_row($result_cod))
-    {
-      print '<option name="code_okso" style ="background-color:#DDCECE;" value="'.$row_cod[0].'">';
-        print $row_cod[1].': '.$row_cod[2];
-      print"</option>";
-    }
-
-
- ?>		
-
-												</select>
-														
 												
-												<select name="id_qual" class="form-control">
-												<option  value="0" style="background-color:#A88F8F;">Выберете код ОКСО</option>
-<?php 
-$result_cod = pg_query($connect,"SELECT  *FROM qualification ");
-    while ($row_cod = pg_fetch_row($result_cod))
-    {
-      print '<option name="code_okso" style ="background-color:#DDCECE;" value="'.$row_cod[0].'">';
-        print $row_cod[1];
-      print"</option>";
-    }
-
-
- ?>		
-
-												</select>
+												
+												
 
 												<p align="center">Ф.И.О Исполнителя</p> 
-												<input type="text" name="executor" class="form-control" placeholder="Арченков Павел Владимирович">
-												<p align="center">Группа</p> 
-												<input type="text" name="groups"  class="form-control-smile" placeholder="484"> <br>    
-												<p class="leftstr">Пол</p>
-												<p class="rightstr">Отделение </p>
-												<div class="leftstr">
-													<label class="checkbox-inline">
-														<input type="radio" id="radio-inline"  name="sex" value="0"> - М 
-													</label>
-													<label class="checkbox-inline">
-														<input type="radio" id="radio-inline"  name="sex" value="1"> - Ж 
-													</label>
-												</div>
+						
+											<select name="id_dep" class="form-control">
+											<option value="0" style="background-color:#A88F8F;">Исполнителя</option>
+<?php 
+	$connect= pg_connect("host=localhost port=5432 dbname=test_c user=postgres password=postgres");
+	$result_dep = pg_query($connect,"SELECT  *FROM vkr_works ");
+    while ($row_dep = pg_fetch_row($result_dep))
+    {
+      print '<option style ="background-color:#DDCECE;" value="'.$row_dep[0].'">';
+        print $row_dep[2];
+      print"</option>";
+    }
 
-												<div class="rightstr">
-													<label class="checkbox-inline">
-														<input type="radio" id="radio-inline"  name="office" value="1"> - Заочное 
-													</label>
-													<label class="checkbox-inline">
-														<input type="radio" id="radio-inline"  name="office" value="0"> - Очное 
-													</label>
-												</div><br>
+
+ ?>
+
+</select>
+												
+
+												
 
 												<p align="center">Руководители</p> 
 												 <hr>
@@ -219,17 +166,7 @@ print '
 <label class="checkbox-inline">
 <input type="checkbox" id="radio-inline" '.$check.' name="s_cons_'.$c.'" >№'.$c.':
 </label>
-<select name="n_cons_'.$c.'" class="form-control-cons">
-<option  value="0" style="background-color:#A88F8F;">Консультант №'.$c.'</option>';
-
-$result_cod = pg_query($connect,"SELECT  *FROM ped_composition");
-    while ($row_cod = pg_fetch_row($result_cod))
-    {
-      print '<option style ="background-color:#DDCECE;" value="'.$row_cod[2].' : '.$row_cod[1].'">';
-        print $row_cod[1];
-      print"</option>";
-    }
-print '</select>
+<input type="text" name="subject" id="searchbox" class="form-control-cons" placeholder="Консультант №'.$c.'. ">
 </div>';
 
 print'<input type="text" name="open" value="'.$_GET['open'].'" hidden="true" > ';
@@ -261,7 +198,7 @@ $result_cod = pg_query($connect,"SELECT  *FROM ped_composition");
 												</div>
 
 												<p class="rightstr">Допущен(a) к защите</p>
-												<input type="date" name="date_def" class="form-control-smile"> 
+												<input type="text" name="date_def" id="datepicker-d-1" placeholder="Дата">
 
 												
 
@@ -280,7 +217,7 @@ $result_cod = pg_query($connect,"SELECT  *FROM ped_composition");
 							</div>
 						</div>
 <?php 	
-include("security/control.php");
+
  
 
 
@@ -302,9 +239,9 @@ $_GET['normative']!='' and
 $_GET['n_cons_1']!='' and
 $_GET['head_chair']!='' and
 $_GET['open']!='' and*/
-$_GET['n_cons_1']!='' and
-$_GET['s_cons_1']=='on' and
-$_GET['date_def'])
+
+$_GET['s_cons_1']=='on' )
+
 
 {
 	$consultant='';

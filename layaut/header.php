@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Выбор шаблона</title>
-	<link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="../bootstrap/css/bootstrap.css" rel="stylesheet">
   <link href="../bootstrap/css/dashboard.css" rel="stylesheet">
   <script type="text/javascript" src="../js/jquery-1.6.4.min.js"></script>
   <script type="text/javascript" src="../js/modul/script.js"></script>
@@ -43,23 +43,18 @@
             <li><a href="archive_kurs_works.php">Архив курсовых работ</a></li>
             
           </ul>
-          <ul class="nav nav-sidebar">
-            <li><h4>&nbspУправление шаблонами</h4></li>
-            <li><a href="create_template.php">Создать</a></li>
-            <li><a href="edit_template.php">Настроить шаблон работы</a></li>
-        
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><h4>&nbspУправление пользователями</h4></li>
-            <li><a href="create_users.php">Добавить пользователя</a></li>
-            <li><a href="list_users.php">Список пользователей</a></li>
-          </ul>
-             <ul class="nav nav-sidebar">
-            <li><h4>&nbspДополнительные настройки</h4></li>
-            <li><a href="faculties.php">Факультеты</a></li>
-            <li><a href="departments.php">Кафедры</a></li>
-            <li><a href="code_okso.php">Код ОКСО</a></li>
-            <li><a href="ped_composition.php">Состав ШГПИ</a></li>
-            <li><a href="studens.php">Студенты</a></li>
-          </ul>
+          
+           <?php 
+              
+              if ($_SESSION['user']=='Admin')
+              {
+                print'<ul class="nav nav-sidebar">
+                <li><h4>&nbspУправление пользователями</h4></li>
+                <li><a href="create_users.php">Добавить пользователя</a></li>
+                <li><a href="list_users.php">Список пользователей</a></li>
+              </ul>';
+              }
+
+               ?>
+            
         </div>

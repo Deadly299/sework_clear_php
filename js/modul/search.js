@@ -65,8 +65,9 @@ $(window).load(function(){
         }
     });
  
-    // делаем обработку клика по подсказке
-    $('.advice_variant').live('click',function(){
+
+ $(document).on( "click", ".advice_variant", function(e){ 
+
         // ставим текст в input поиска
         $('.form-control-serch').val($(this).text());
         // прячем слой подсказки
@@ -158,3 +159,21 @@ function key_activate(n){
     })
 
 })*/
+ $(document).ready(function(){
+    $( "#datepicker-d-1" ).datepicker( $.datepicker.regional[ "ru" ] );
+});
+  $(document).ready(function(){
+    $( "#datepicker-d2-1" ).datepicker( $.datepicker.regional[ "ru" ] );
+});
+  $(document).ready(function(){
+    $( "#datepicker-d-2" ).datepicker( $.datepicker.regional[ "ru" ] );
+});
+  $(document).ready(function(){
+    $( "#datepicker-d2-2" ).datepicker( $.datepicker.regional[ "ru" ] );
+});
+  $(document).ready(function(){
+    $( "#datepicker-d-3" ).datepicker( $.datepicker.regional[ "ru" ] );
+});
+  $(document).ready(function(){
+    $( "#datepicker-d2-3" ).datepicker( $.datepicker.regional[ "ru" ] );
+});
